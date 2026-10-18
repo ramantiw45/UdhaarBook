@@ -20,8 +20,9 @@ services:
       # https://aistudio.google.com/apikey
       - key: AI_STUDIO_API_KEY
         sync: false
+      # Gemma 4 is served on the native generateContent route (not OpenAI-compat).
       - key: AI_STUDIO_MODEL
-        value: gemma-3-27b-it
+        value: gemma-4-31b-it
       # Optional failover lane
       - key: GROQ_API_KEY
         sync: false

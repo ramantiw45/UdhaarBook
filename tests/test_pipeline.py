@@ -86,6 +86,40 @@ def test_no_key_path_never_dead_ends() -> None:
     assert len(result.rows) == 12
 
 
+def test_gemma_lane_speaks_native() -> None:
+    """Gemma 4 is only served on generateContent, so the body must be native.
+
+    A rename alone would 404: the OpenAI-compatible route stopped serving Gemma
+    when Gemma 3 was retired in 2026.
+    """
+    messages = llm._messages("", b"\xff\xd8\xff", "image/jpeg")
+    body = llm._gemini_payload(messages)
+
+    parts = body["contents"][0]["parts"]
+    assert parts[0]["inline_data"]["mime_type"] == "image/jpeg", parts
+    assert body["systemInstruction"]["parts"][0]["text"] == llm.SYSTEM
+    assert body["generationConfig"]["temperature"] == 0
+
+    assert (
+        llm._native_base("https://generativelanguage.googleapis.com/v1beta/openai")
+        == "https://generativelanguage.googleapis.com/v1beta"
+    )
+
+    import os
+
+    previous = os.environ.get("AI_STUDIO_API_KEY")
+    os.environ["AI_STUDIO_API_KEY"] = "test-only"
+    try:
+        lane = [lane for lane in llm.lanes() if lane.name == "ai-studio"][0]
+        assert lane.model == "gemma-4-31b-it", lane.model
+        assert lane.protocol == "gemini", lane.protocol
+    finally:
+        if previous is None:
+            os.environ.pop("AI_STUDIO_API_KEY", None)
+        else:
+            os.environ["AI_STUDIO_API_KEY"] = previous
+
+
 if __name__ == "__main__":
     failures = 0
     for name, fn in sorted(globals().items()):

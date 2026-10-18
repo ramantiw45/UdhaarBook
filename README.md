@@ -22,7 +22,7 @@ flowchart LR
   O --> T[Page text, on this device]
   T --> L{Open-weight lane chain}
   L --> L1[Ollama gemma3:4b<br/>on-device]
-  L --> L2[Gemma 3 · Google AI Studio<br/>free tier]
+  L --> L2[Gemma 4 · Google AI Studio<br/>native generateContent]
   L --> L3[Qwen 3.8 · Groq<br/>free tier, failover]
   L --> L4[Deterministic parser<br/>no keys, no network]
   L --> R[Transaction rows]
@@ -43,9 +43,14 @@ variable, so a shop is never renting access to its own ledger:
 | Lane | Model | Weights | Cost |
 |---|---|---|---|
 | On-device | `gemma3:4b` via Ollama | [Gemma](https://huggingface.co/google/gemma-3-4b-it) | free, offline |
-| Hosted | `gemma-3-27b-it` via Google AI Studio | open weights | free tier |
+| Hosted | `gemma-4-31b-it` via Google AI Studio | open weights | free tier |
 | Failover | `qwen/qwen3.8-27b` via Groq | open weights | free tier |
 | No keys | built-in regex parser | — | free |
+
+Gemma 4 on AI Studio is served on the native `generateContent` route, not the
+OpenAI-compatible one — Gemma 3 was retired from the Gemini API in 2026. That is
+the only lane with a small protocol adapter; Ollama and Groq still speak plain
+chat-completions.
 
 Point `OLLAMA_BASE_URL` at a local model and the whole pipeline runs on the
 shop's own machine with no code change. The OCR layer is open source too

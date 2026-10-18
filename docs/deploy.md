@@ -18,18 +18,18 @@ works end to end on the built-in parser.
 1. Open <https://aistudio.google.com/apikey> and sign in with any Google account.
 2. Click **Create API key**. If it asks for a project, let it create one.
 3. Copy the key. It starts with `AIza…` and is shown only once.
-4. Check it before deploying:
+4. Check it before deploying. Gemma 4 lives on the native `generateContent`
+   route (the OpenAI-compatible route answers 404 for Gemma), so test that one:
 
    ```powershell
    $env:AI_STUDIO_API_KEY = "AIza...paste-here"
 
-   $body = '{"model":"gemma-3-27b-it","messages":[{"role":"user","content":"Reply with the word ok."}]}'
-   Invoke-RestMethod -Method Post `
-     -Uri "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions" `
-     -Headers @{ Authorization = "Bearer $env:AI_STUDIO_API_KEY" } `
-     -ContentType "application/json" -Body $body |
-     Select-Object -ExpandProperty choices |
-     Select-Object -ExpandProperty message
+   $body = '{"contents":[{"role":"user","parts":[{"text":"Reply with the word ok."}]}]}'
+   $r = Invoke-RestMethod -Method Post `
+     -Uri "https://generativelanguage.googleapis.com/v1beta/models/gemma-4-31b-it:generateContent" `
+     -Headers @{ "x-goog-api-key" = $env:AI_STUDIO_API_KEY } `
+     -ContentType "application/json" -Body $body
+   $r.candidates[0].content.parts.text
    ```
 
    A reply containing `ok` means the key and the model name are both good.
@@ -38,10 +38,10 @@ works end to end on the built-in parser.
    <summary>macOS / Linux / Git Bash</summary>
 
    ```bash
-   curl -s https://generativelanguage.googleapis.com/v1beta/openai/chat/completions \
-     -H "Authorization: Bearer $AI_STUDIO_API_KEY" \
+   curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemma-4-31b-it:generateContent" \
+     -H "x-goog-api-key: $AI_STUDIO_API_KEY" \
      -H "Content-Type: application/json" \
-     -d '{"model":"gemma-3-27b-it","messages":[{"role":"user","content":"Reply with the word ok."}]}'
+     -d '{"contents":[{"role":"user","parts":[{"text":"Reply with the word ok."}]}]}'
    ```
 
    </details>
@@ -49,7 +49,7 @@ works end to end on the built-in parser.
    | Response | Meaning |
    |---|---|
    | `200` with a reply | key and model name are good |
-   | `400` / `404` | usually the model name — `AI_STUDIO_MODEL` must be `gemma-3-27b-it` |
+   | `400` / `404` | usually the model name — use `gemma-4-31b-it`; Gemma 3 was retired in 2026 |
    | `403` | the key is wrong, or the API is not enabled for that project |
    | `429` | free-tier rate limit — the app falls back, try again later |
 
@@ -134,6 +134,7 @@ tells you whether the model or the parser did the work.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
+| Read screen says "LANES THAT DID NOT ANSWER: 404" | the model name is retired — Gemma 3 left the Gemini API in 2026 | pull the latest `main`; it reads with `gemma-4-31b-it` on the native route |
 | Build fails immediately | the requested Python patch is not offered | set `PYTHON_VERSION` to `3.12.11` or `3.13.7` in the dashboard and redeploy |
 | Live, but every read says "built-in parser" | key missing, invalid, or model name retired | check `/healthz`, then the Render logs |
 | `429` in the logs | free-tier request limit | expected; the chain falls back, retry later |

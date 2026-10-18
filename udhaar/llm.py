@@ -5,13 +5,15 @@ that answered is recorded and shown in the UI, because "which model read
 this?" is a fair question to ask of a tool that touches someone's money.
 
 1. **Ollama** (if ``OLLAMA_BASE_URL`` is set) — fully on-device, nothing leaves.
-2. **Google AI Studio** — ``gemma-3-27b-it``, open weights, free tier.
+2. **Google AI Studio** — ``gemma-4-31b-it``, open weights, free tier.
 3. **Groq** — ``qwen/qwen3.8-27b``, open weights, free tier. Failover.
 4. **Deterministic parser** — no keys, no network, no model. Last resort so
    the demo is never a dead end.
 
-Every lane speaks the OpenAI chat-completions shape, so swapping lanes is one
-env var and zero code changes. That portability is the point.
+Ollama and Groq speak the OpenAI chat-completions shape. Gemma on AI Studio no
+longer does: Gemma 3 was retired from the Gemini API in 2026 and the Gemma 4
+models are served only on the native ``generateContent`` route, so that lane
+carries a small adapter. Swapping lanes is still one env var, no code changes.
 """
 
 from __future__ import annotations
@@ -39,6 +41,7 @@ class Lane:
     vision: bool = True
     local: bool = False
     note: str = ""
+    protocol: str = "openai"  # "openai" | "gemini" (native generateContent)
 
     @property
     def label(self) -> str:
@@ -72,11 +75,12 @@ def lanes() -> list[Lane]:
                 name="ai-studio",
                 base_url=os.getenv(
                     "AI_STUDIO_BASE_URL",
-                    "https://generativelanguage.googleapis.com/v1beta/openai",
+                    "https://generativelanguage.googleapis.com/v1beta",
                 ).rstrip("/"),
-                model=os.getenv("AI_STUDIO_MODEL", "gemma-3-27b-it"),
+                model=os.getenv("AI_STUDIO_MODEL", "gemma-4-31b-it"),
                 api_key=os.environ["AI_STUDIO_API_KEY"].strip(),
-                note="Gemma 3, open weights",
+                note="Gemma 4, open weights",
+                protocol="gemini",
             )
         )
 
@@ -161,7 +165,7 @@ def _user_prompt(ocr_text: str) -> str:
 
 
 def _messages(ocr_text: str, image_bytes: bytes | None, mime: str) -> list[dict]:
-    """Gemma 3 has no system role, so the system prompt rides as the first turn."""
+    """Build the turn list; the Gemini adapter maps the system role natively."""
     content: list[dict] = [{"type": "text", "text": _user_prompt(ocr_text)}]
     if image_bytes:
         b64 = base64.b64encode(image_bytes).decode("ascii")
@@ -354,7 +358,7 @@ class ExtractResult:
         return bool(self.rows)
 
 
-def _call_lane(lane: Lane, messages: list[dict]) -> str:
+def _openai_call(lane: Lane, messages: list[dict]) -> str:
     url = f"{lane.base_url}/chat/completions"
     body = {
         "model": lane.model,
@@ -371,6 +375,103 @@ def _call_lane(lane: Lane, messages: list[dict]) -> str:
         resp.raise_for_status()
         data = resp.json()
     return data["choices"][0]["message"]["content"] or ""
+
+
+def _data_url_parts(url: str) -> tuple[str, str]:
+    """Split ``data:image/jpeg;base64,...`` into its mime type and payload."""
+    if not url.startswith("data:"):
+        raise ValueError("the native Gemma lane only accepts inline image data")
+    header, _, payload = url.partition(",")
+    mime = header[5:].split(";")[0] or "image/jpeg"
+    return mime, payload
+
+
+def _gemini_payload(messages: list[dict]) -> dict:
+    """Translate OpenAI-shaped messages into a native generateContent body."""
+    system: list[dict] = []
+    contents: list[dict] = []
+
+    for message in messages:
+        role = message.get("role", "user")
+        content = message.get("content")
+        parts: list[dict] = []
+
+        if isinstance(content, str):
+            parts.append({"text": content})
+        else:
+            for item in content or []:
+                kind = item.get("type")
+                if kind == "text":
+                    parts.append({"text": item.get("text", "")})
+                elif kind == "image_url":
+                    mime, payload = _data_url_parts(
+                        (item.get("image_url") or {}).get("url", "")
+                    )
+                    parts.append(
+                        {"inline_data": {"mime_type": mime, "data": payload}}
+                    )
+
+        if role == "system":
+            system.extend(parts)
+        else:
+            contents.append(
+                {"role": "model" if role == "assistant" else "user", "parts": parts}
+            )
+
+    body: dict = {
+        "contents": contents,
+        "generationConfig": {"temperature": 0, "maxOutputTokens": 4000},
+    }
+    if system:
+        body["systemInstruction"] = {"parts": system}
+    return body
+
+
+def _native_base(url: str) -> str:
+    """The native API base, even if an older .env still says the OpenAI one."""
+    base = url.rstrip("/")
+    if base.endswith("/openai"):
+        base = base[: -len("/openai")]
+    return base
+
+
+def _gemini_call(lane: Lane, messages: list[dict]) -> str:
+    """Call Gemma on Google's native route, which is the only route it has."""
+    model = lane.model
+    if model.startswith("models/"):
+        model = model[len("models/") :]
+    url = f"{_native_base(lane.base_url)}/models/{model}:generateContent"
+
+    with httpx.Client(timeout=TIMEOUT) as client:
+        resp = client.post(
+            url,
+            json=_gemini_payload(messages),
+            headers={
+                "x-goog-api-key": lane.api_key,
+                "Content-Type": "application/json",
+            },
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+    candidates = data.get("candidates") or []
+    if not candidates:
+        blocked = (data.get("promptFeedback") or {}).get("blockReason")
+        detail = f" ({blocked})" if blocked else ""
+        raise ValueError(f"no candidates returned{detail}")
+
+    parts = (candidates[0].get("content") or {}).get("parts") or []
+    text = "".join(part.get("text", "") for part in parts if not part.get("thought"))
+    if not text.strip():
+        reason = candidates[0].get("finishReason") or "empty response"
+        raise ValueError(f"empty response ({reason})")
+    return text
+
+
+def _call_lane(lane: Lane, messages: list[dict]) -> str:
+    if lane.protocol == "gemini":
+        return _gemini_call(lane, messages)
+    return _openai_call(lane, messages)
 
 
 def extract_rows(
