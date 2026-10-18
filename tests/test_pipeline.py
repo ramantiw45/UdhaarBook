@@ -111,7 +111,7 @@ def test_gemma_lane_speaks_native() -> None:
     os.environ["AI_STUDIO_API_KEY"] = "test-only"
     try:
         lane = [lane for lane in llm.lanes() if lane.name == "ai-studio"][0]
-        assert lane.model == "gemma-4-31b-it", lane.model
+        assert lane.model == "gemma-4-26b-a4b-it", lane.model
         assert lane.protocol == "gemini", lane.protocol
     finally:
         if previous is None:

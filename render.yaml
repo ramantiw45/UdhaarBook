@@ -22,7 +22,7 @@ services:
         sync: false
       # Gemma 4 is served on the native generateContent route (not OpenAI-compat).
       - key: AI_STUDIO_MODEL
-        value: gemma-4-31b-it
+        value: gemma-4-26b-a4b-it
       # Optional failover lane
       - key: GROQ_API_KEY
         sync: false

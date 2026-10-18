@@ -5,7 +5,7 @@ that answered is recorded and shown in the UI, because "which model read
 this?" is a fair question to ask of a tool that touches someone's money.
 
 1. **Ollama** (if ``OLLAMA_BASE_URL`` is set) — fully on-device, nothing leaves.
-2. **Google AI Studio** — ``gemma-4-31b-it``, open weights, free tier.
+2. **Google AI Studio** — ``gemma-4-26b-a4b-it``, open weights, free tier.
 3. **Groq** — ``qwen/qwen3.8-27b``, open weights, free tier. Failover.
 4. **Deterministic parser** — no keys, no network, no model. Last resort so
    the demo is never a dead end.
@@ -22,6 +22,7 @@ import base64
 import json
 import os
 import re
+import time
 from dataclasses import dataclass, field
 
 import httpx
@@ -77,7 +78,7 @@ def lanes() -> list[Lane]:
                     "AI_STUDIO_BASE_URL",
                     "https://generativelanguage.googleapis.com/v1beta",
                 ).rstrip("/"),
-                model=os.getenv("AI_STUDIO_MODEL", "gemma-4-31b-it"),
+                model=os.getenv("AI_STUDIO_MODEL", "gemma-4-26b-a4b-it"),
                 api_key=os.environ["AI_STUDIO_API_KEY"].strip(),
                 note="Gemma 4, open weights",
                 protocol="gemini",
@@ -451,6 +452,19 @@ def _gemini_call(lane: Lane, messages: list[dict]) -> str:
                 "Content-Type": "application/json",
             },
         )
+        # A 5xx from the hosted Gemma endpoint is usually transient; one retry
+        # is cheap and keeps the demo off the failure screen. 429 is a quota
+        # answer, so it is deliberately not retried.
+        if resp.status_code >= 500:
+            time.sleep(1.0)
+            resp = client.post(
+                url,
+                json=_gemini_payload(messages),
+                headers={
+                    "x-goog-api-key": lane.api_key,
+                    "Content-Type": "application/json",
+                },
+            )
         resp.raise_for_status()
         data = resp.json()
 

@@ -43,14 +43,15 @@ variable, so a shop is never renting access to its own ledger:
 | Lane | Model | Weights | Cost |
 |---|---|---|---|
 | On-device | `gemma3:4b` via Ollama | [Gemma](https://huggingface.co/google/gemma-3-4b-it) | free, offline |
-| Hosted | `gemma-4-31b-it` via Google AI Studio | open weights | free tier |
+| Hosted | `gemma-4-26b-a4b-it` via Google AI Studio | open weights | free tier |
 | Failover | `qwen/qwen3.8-27b` via Groq | open weights | free tier |
 | No keys | built-in regex parser | — | free |
 
 Gemma 4 on AI Studio is served on the native `generateContent` route, not the
 OpenAI-compatible one — Gemma 3 was retired from the Gemini API in 2026. That is
 the only lane with a small protocol adapter; Ollama and Groq still speak plain
-chat-completions.
+chat-completions. The default is the 26B-A4B MoE (fast, reliable on the free
+tier); set `AI_STUDIO_MODEL=gemma-4-31b-it` for the heavier dense model.
 
 Point `OLLAMA_BASE_URL` at a local model and the whole pipeline runs on the
 shop's own machine with no code change. The OCR layer is open source too
