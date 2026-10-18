@@ -66,6 +66,13 @@ No key at all? Tick **use the sample page** and everything still runs, end to
 end, on the built-in parser. That is deliberate: a reviewer should never hit a
 dead end.
 
+## Deploy
+
+One free Render blueprint, no database service, no card:
+
+**[`docs/deploy.md`](docs/deploy.md)** — get a free AI Studio key, press Deploy,
+then read `/healthz` to see which reader lanes are actually live.
+
 Want the on-device reader too:
 
 ```bash
