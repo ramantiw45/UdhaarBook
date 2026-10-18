@@ -482,11 +482,14 @@ footer strong { color: var(--ink-dim); font-weight: 500; }
   content: counter(s, decimal-leading-zero);
   font-family: var(--fig);
   font-size: 11px;
-  color: var(--red);
+  /* Text Red, not Structure Crimson: these are words, so they must clear 4.5:1. */
+  color: var(--red-bright);
   padding-top: 3px;
 }
 
-.copy-flash { color: var(--amber); }
+/* The confirmation is a state of the solid action, not a tint: amber ground
+   with the same black text keeps it at full contrast for keyboard and touch. */
+.act.solid.copy-flash { background: var(--amber); border-color: var(--amber); color: var(--ground); }
 
 /* A disclosure is a control: it gets a thumb-sized target like any other. */
 summary { min-height: 44px; display: flex; align-items: center; gap: 8px; }

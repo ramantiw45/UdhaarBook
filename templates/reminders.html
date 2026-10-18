@@ -37,19 +37,18 @@
             aria-label="Entry {{ '%02d'|format(loop.index) }}, ₹{{ '{:,.0f}'.format(e.balance) }} outstanding. {{ 'Hide' if loop.first else 'Show' }} the name and the message.">
       <span class="code">{{ '%02d'|format(loop.index) }}</span>
       <span class="mark{% if e.balance <= 0 %} received{% endif %}" style="--strip: {{ e.strip }}" aria-hidden="true"></span>
-      <span class="who{% if loop.first %} decoded{% endif %}" data-name="{{ e.name }}"
-            data-label="">{{ e.name if loop.first else '' }}</span>
+      <span class="who{% if loop.first %} decoded{% endif %}" data-name="{{ e.name }}">{{ e.name if loop.first else '' }}</span>
       <span class="amount"><span class="drop">₹</span>{{ '{:,.0f}'.format(e.balance) }}</span>
     </button>
 
-    <div class="decode{% if loop.first %} open{% endif %}" id="d{{ loop.index }}"{% if not loop.first %} inert{% endif %}>
+    <div class="decode{% if loop.first %} open{% endif %}" id="d{{ loop.index }}">
       <div>
         <div class="decode-inner">
           <div class="name-hint">
             <span class="lineage">{% if e.page_no %}Page {{ e.page_no }} · {% endif %}{{ e.lines_label }}{% if e.last_date %} · last {{ e.last_date }}{% endif %} · ₹{{ '{:,.0f}'.format(e.given) }} given{% if e.received %} · ₹{{ '{:,.0f}'.format(e.received) }} back{% endif %}</span>
           </div>
           <p class="message" lang="{{ active_lang }}" id="m{{ loop.index }}">{{ e.message }}</p>
-          <div class="tools">
+          <div class="tools"{% if not loop.first %} inert{% endif %}>
             <button class="act solid" type="button" data-copy="m{{ loop.index }}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
               Copy the message

@@ -31,12 +31,14 @@
     <label class="field">
       <span class="cap">On-device reader</span>
       <select name="backend">
-        <option value="auto">Auto — the best reader installed here</option>
+        <option value="auto">Auto — best reader here</option>
         {% for b in ocr_backends %}<option value="{{ b }}">{{ b }}</option>{% endfor %}
         <option value="none">None — let the model read the image</option>
       </select>
     </label>
     <p class="hint">
+      <strong style="color: var(--ink); font-weight: 500">Auto</strong> uses the
+      best reader installed on this machine.
       {% if reader_state == 'ocr' %}
         Ready: <code>{{ ocr_backends|join(', ') }}</code>. This reads the page on
         this machine, so the photo never has to go anywhere.

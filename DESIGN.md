@@ -274,7 +274,7 @@ The mark is the world's geometry in miniature: a solid slab when credit was give
 
 ### The Decode (signature)
 - **Trigger:** the whole row is a button — minimum 68px tall, grid `44px 6px 1fr auto`, dropping to `38px 6px 1fr auto` under 560px, 44px targets everywhere.
-- **At rest:** the entry number at 11px mono in Text Red — the catalogue code, 01 upward in the order to ask · the hue mark · nothing where the name goes · the amount right-set in mono. The row's accessible name carries the figure ("Entry 03, ₹300 outstanding. Show the name and the message.").
+- **At rest:** the entry number at 11px mono in Text Red — the catalogue code, 01 upward in the order to ask · the hue mark · nothing where the name goes · the amount right-set in mono. The row's accessible name carries the figure and the verb ("Entry 03, ₹300 outstanding. Show the name and the message."), and it is rebuilt when the row opens so it also carries the customer's name ("Entry 03, ₹300 outstanding, Imran Shaikh. Hide the name and the message.").
 - **Opening:** `grid-template-rows` from `0fr` to `1fr` over 460ms on `cubic-bezier(0.16, 1, 0.3, 1)`; the panel's inner block lifts from −4px to none over 320ms with an 80ms delay. Nothing else on the page moves except the devices that commit: the entry number steps to 15px and the mark to 10 × 44px.
 - **Content:** the lineage line in 11.5px mono (`Page 1 · 1 line · last 15/10 · ₹560 given`), the reminder in Mukta at reading size, then one solid full-width Copy action and a quiet text-link WhatsApp handoff beneath it, with a sentence of explanation under both.
 - **Ground truth:** a closed panel is clipped by an `overflow: hidden` wrapper inside the collapsible row — never `opacity: 0`, never `visibility: hidden` — so a text search, a screen reader and the printed page still reach every word (`@media print` forces every panel open). Its buttons, though, are `inert` while the panel is closed, so fourteen invisible controls never sit in the tab order.
@@ -335,7 +335,7 @@ The mark is the world's geometry in miniature: a solid slab when credit was give
 
 ### Don't:
 - **Don't** add a card, a shadow, a glow, or a raised surface: depth is at most a two-grey value shift (#121213, #131314, #101011).
-- **Don't** put a customer's name into a closed row's visible text — it carries the page code, the hue mark, the line count and the figure, and the name arrives through the decode.
+- **Don't** put a customer's name into a closed row's visible text — it carries the page code, the hue mark and the figure, and the name arrives through the decode.
 - **Don't** spend amber on anything but a live control, focus, selection, or a confirmation.
 - **Don't** swap the two voices: no figures in Mukta, no prose in mono.
 - **Don't** round a corner past 2px, and don't draw a pill.
