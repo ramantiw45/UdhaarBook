@@ -37,17 +37,55 @@ def _startup() -> None:
 
 
 def _context(request: Request, **extra) -> dict:
+    backends = ocr.available_backends()
+    lane_rows = llm.describe_lanes()
     ctx = {
         "shop_name": reminders.shop_name(),
         "shop_lang": reminders.shop_lang(),
         "langs": reminders.LANGS,
         "lang_short": reminders.LANGS_SHORT,
-        "lanes": llm.describe_lanes(),
-        "ocr_backends": ocr.available_backends(),
+        "lanes": lane_rows,
+        "ocr_backends": backends,
+        "reader_line": _reader_line(backends, lane_rows),
+        "reader_state": _reader_state(backends, lane_rows),
         "nav": "",
     }
     ctx.update(extra)
     return ctx
+
+
+def _reader_state(backends: list[str], lane_rows: list[dict]) -> str:
+    """What can actually read a photo on this machine right now.
+
+    The read screen used to promise that a page "goes to the model lane" even
+    when no lane had a key, which is the same overclaim the footer carried.
+    """
+    if backends:
+        return "ocr"
+    if any(row["name"] != "deterministic" for row in lane_rows):
+        return "lane"
+    return "none"
+
+
+PROVIDER = {"ollama": "Ollama", "ai-studio": "AI Studio", "groq": "Groq"}
+
+
+def _reader_line(backends: list[str], lane_rows: list[dict]) -> str:
+    """One honest sentence about who reads a page on *this* machine.
+
+    The footer used to claim a model lane whenever no OCR backend was installed,
+    which on a keyless machine is a lie: the deterministic parser did the work.
+    """
+    configured = [row for row in lane_rows if row["name"] != "deterministic"]
+    if backends and configured:
+        return f"{', '.join(backends)} on this machine, then {configured[0]['model']}"
+    if backends:
+        return f"{', '.join(backends)} on this machine"
+    if configured:
+        first = configured[0]
+        where = "this machine" if first["local"] else PROVIDER.get(first["name"], first["name"])
+        return f"{first['model']} via {where}"
+    return "the built-in parser (no model, no network)"
 
 
 def _render(request: Request, name: str, status_code: int = 200, **extra):
@@ -149,6 +187,17 @@ class SavePayload(BaseModel):
     scan_id: int | None = None
     lane: str = ""
     rows: list[dict] = []
+
+
+@app.get("/read", include_in_schema=False)
+def read_page_again():
+    """The confirm screen is a step, not a page.
+
+    A refresh or a bookmark used to land on raw JSON (`Method Not Allowed`),
+    which is a dead end for a shopkeeper and for anyone reviewing the app.
+    Send them back to the page that starts the step.
+    """
+    return RedirectResponse("/", status_code=303)
 
 
 @app.post("/save")

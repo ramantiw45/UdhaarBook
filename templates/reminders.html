@@ -6,10 +6,10 @@
 {% if entries %}
 <svg class="plot" viewBox="0 0 {{ plot.width }} {{ plot.height }}" preserveAspectRatio="none"
      style="height: {{ plot.height }}px"
-     role="img" aria-label="One hairline per customer, its length showing what they still owe. A red tick marks a customer who has both taken credit and paid some back.">
+     role="img" aria-label="One hairline per customer, its length showing what they still owe. A red tick marks a customer who has both taken credit and paid some back.{% if plot.rest %} The dashed line at the end is the remaining {{ plot.rest }} customers added together.{% endif %}">
   <line class="rail" x1="0.5" y1="0" x2="0.5" y2="{{ plot.height }}" />
   {% for row in plot.rows %}
-  <line class="{{ 'line sel' if row.selected else 'line' }}" x1="0" y1="{{ row.y }}" x2="{{ row.length }}" y2="{{ row.y }}" />
+  <line class="{{ 'line sel' if row.selected else ('line rest' if row.rest else 'line') }}" x1="0" y1="{{ row.y }}" x2="{{ row.length }}" y2="{{ row.y }}" />
   {% if row.crossing %}<line class="tick" x1="{{ row.crossing }}" y1="{{ row.y - 5 }}" x2="{{ row.crossing }}" y2="{{ row.y + 5 }}" />{% endif %}
   {% endfor %}
 </svg>
@@ -33,27 +33,28 @@
 <ol class="seq">
   {% for e in entries %}
   <li class="entry">
-    <button class="row" type="button" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="d{{ loop.index }}">
-      <span class="code">P{{ '%02d'|format(e.page_no) if e.page_no else '—' }}</span>
+    <button class="row" type="button" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="d{{ loop.index }}"
+            aria-label="Entry {{ '%02d'|format(loop.index) }}, ₹{{ '{:,.0f}'.format(e.balance) }} outstanding. {{ 'Hide' if loop.first else 'Show' }} the name and the message.">
+      <span class="code">{{ '%02d'|format(loop.index) }}</span>
       <span class="mark{% if e.balance <= 0 %} received{% endif %}" style="--strip: {{ e.strip }}" aria-hidden="true"></span>
       <span class="who{% if loop.first %} decoded{% endif %}" data-name="{{ e.name }}"
-            data-label="{{ e.lines_label }}">{{ e.name if loop.first else e.lines_label }}</span>
+            data-label="">{{ e.name if loop.first else '' }}</span>
       <span class="amount"><span class="drop">₹</span>{{ '{:,.0f}'.format(e.balance) }}</span>
     </button>
 
-    <div class="decode{% if loop.first %} open{% endif %}" id="d{{ loop.index }}">
+    <div class="decode{% if loop.first %} open{% endif %}" id="d{{ loop.index }}"{% if not loop.first %} inert{% endif %}>
       <div>
         <div class="decode-inner">
           <div class="name-hint">
-            <span class="lineage">{{ e.lines_label }}{% if e.last_date %} · last {{ e.last_date }}{% endif %} · ₹{{ '{:,.0f}'.format(e.given) }} given{% if e.received %} · ₹{{ '{:,.0f}'.format(e.received) }} back{% endif %}</span>
+            <span class="lineage">{% if e.page_no %}Page {{ e.page_no }} · {% endif %}{{ e.lines_label }}{% if e.last_date %} · last {{ e.last_date }}{% endif %} · ₹{{ '{:,.0f}'.format(e.given) }} given{% if e.received %} · ₹{{ '{:,.0f}'.format(e.received) }} back{% endif %}</span>
           </div>
           <p class="message" lang="{{ active_lang }}" id="m{{ loop.index }}">{{ e.message }}</p>
           <div class="tools">
-            <button class="act small" type="button" data-copy="m{{ loop.index }}">
+            <button class="act solid" type="button" data-copy="m{{ loop.index }}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
               Copy the message
             </button>
-            <a class="act small" href="https://wa.me/?text={{ e.message|urlencode }}"
+            <a class="quiet" href="https://wa.me/?text={{ e.message|urlencode }}"
                target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></svg>
               Open in WhatsApp

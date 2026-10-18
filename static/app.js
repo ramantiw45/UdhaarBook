@@ -16,7 +16,13 @@
   function setOpen(row, open) {
     const panel = panelFor(row);
     const who = row.querySelector(".who");
-    if (panel) panel.classList.toggle("open", open);
+    if (panel) {
+      panel.classList.toggle("open", open);
+      // A collapsed panel is clipped, not hidden, so its words stay findable and
+      // printable. `inert` keeps its Copy and WhatsApp buttons out of the tab
+      // order while it is closed, which clipping alone does not do.
+      panel.inert = !open;
+    }
     row.setAttribute("aria-expanded", open ? "true" : "false");
     if (who && who.dataset.name) {
       who.textContent = open ? who.dataset.name : who.dataset.label || "";

@@ -23,8 +23,6 @@
   --pad: 18px;
   --gutter: 20px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-
-  --track: "Rajdhani";
 }
 
 * { box-sizing: border-box; }
@@ -140,7 +138,7 @@ main { padding: 28px 0 96px; }
 .plot line { vector-effect: non-scaling-stroke; }
 .plot .line { stroke: var(--ink); stroke-width: 1; }
 .plot .line.sel { stroke-width: 2.5; }
-.plot .line.rest { stroke: var(--ink-dim); stroke-width: 1; }
+.plot .line.rest { stroke: var(--ink-dim); stroke-width: 1; stroke-dasharray: 2 4; }
 .plot .tick { stroke: var(--red); stroke-width: 1.5; }
 .plot .rail { stroke: var(--hair); stroke-width: 1; }
 
@@ -181,7 +179,7 @@ main { padding: 28px 0 96px; }
 
 .entry > .row {
   display: grid;
-  grid-template-columns: 44px 8px 1fr auto;
+  grid-template-columns: 44px 6px 1fr auto;
   align-items: center;
   gap: 14px;
   width: 100%;
@@ -197,24 +195,36 @@ main { padding: 28px 0 96px; }
 .row:hover { background: #121213; }
 
 .code { font-family: var(--fig); font-size: 11px; color: var(--red-bright); letter-spacing: 0.04em; }
+/* The catalogue entry number, at plate scale on the row whose name is showing. */
+.row[aria-expanded="true"] .code { font-size: 15px; }
 
-.strip { width: 8px; height: 34px; display: block; background: var(--strip, var(--ink-dim)); }
+.strip { width: 6px; height: 34px; display: block; background: var(--strip, var(--ink-dim)); }
 
+/* The customer mark: 6px at rest — the contract's own mass — and at plate scale
+   on the one row whose name is showing, so the identity device carries weight
+   exactly where identity is revealed. The owner-watching-the-counter rule is
+   unchanged: filled slab = credit given, hollow + strike = money received. */
 .mark { display: block; width: 26px; height: 34px; position: relative; }
 .mark::before {
   content: "";
   position: absolute;
   left: 0; top: 0;
-  width: 8px; height: 100%;
+  width: 6px; height: 100%;
   background: var(--strip, var(--ink-dim));
 }
+.row[aria-expanded="true"] .mark { height: 44px; }
+.row[aria-expanded="true"] .mark::before { width: 10px; }
+/* The mark's box is exactly its slab inside a row, so the identity device never
+   paints over the name's box. The strike still overhangs into the gap. */
+.entry > .row .mark { width: 6px; }
+.entry > .row[aria-expanded="true"] .mark { width: 10px; }
 /* direction is never colour alone: filled slab = given, hollow + strike = received */
 .mark.received::before { background: none; border: 1px solid var(--strip, var(--ink-dim)); }
 .mark.received::after {
   content: "";
   position: absolute;
-  left: -2px; top: 50%;
-  width: 12px; height: 1px;
+  left: -3px; top: 50%;
+  width: 16px; height: 1px;
   background: var(--strip, var(--ink-dim));
 }
 
@@ -370,7 +380,24 @@ input:hover, select:hover, textarea:hover { border-color: var(--ink-faint); }
 .callout ul { margin: 8px 0 0; padding-left: 18px; }
 .callout li { margin-bottom: 4px; }
 
-.tools { display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 0; }
+.tools { display: grid; justify-items: start; gap: 4px; margin: 22px 0 0; }
+.tools .act { width: 100%; }
+.tools .quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  color: var(--ink-dim);
+  font-family: var(--cap);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+.tools .quiet:hover { color: var(--ink); border-color: var(--ink-dim); }
+.tools .quiet svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; }
 
 table.lines { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.lines th {
@@ -490,7 +517,7 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
   .topbar .wrap { gap: 8px; }
   table.lines th, table.lines td { padding: 9px 5px; }
   table.lines .col-page { display: none; }
-  .entry > .row { grid-template-columns: 38px 8px 1fr auto; gap: 10px; }
+  .entry > .row { grid-template-columns: 38px 6px 1fr auto; gap: 10px; }
   .decode-inner { padding-left: 56px; }
 }
 

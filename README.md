@@ -72,6 +72,20 @@ Want the on-device reader too:
 pip install -r requirements-ocr.txt
 ```
 
+## Tests
+
+Neither suite needs a test framework installed:
+
+```bash
+python tests/test_pipeline.py    # 4 checks: parsing, money maths, reminders, no-key path
+python tools/smoke_http.py       # 20 checks against a running server
+```
+
+`tools/smoke_http.py` expects the app on `http://127.0.0.1:8000`. It includes the
+check that matters most for a stranger clicking through: uploading a photo with
+no OCR backend and no key must answer **200 with an honest explanation**, not a
+500 and not a blank table.
+
 ## Environment
 
 Every value is optional. See `.env.example`.

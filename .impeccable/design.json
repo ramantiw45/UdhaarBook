@@ -1,0 +1,515 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19",
+  "title": "Design System: Udhaar Book",
+  "extensions": {
+    "colorMeta": {
+      "catalogue-white": {
+        "role": "primary",
+        "displayName": "Catalogue White",
+        "canonical": "#f2f2ef",
+        "tonalRamp": [
+          "#0b0b09",
+          "#272724",
+          "#454543",
+          "#666664",
+          "#898987",
+          "#aeaeab",
+          "#d4d4d1",
+          "#efefec"
+        ]
+      },
+      "structure-red": {
+        "role": "secondary",
+        "displayName": "Structure Crimson",
+        "canonical": "#c8102e",
+        "tonalRamp": [
+          "#1f0002",
+          "#4f000b",
+          "#850019",
+          "#c00029",
+          "#ec414b",
+          "#ff8481",
+          "#ffc3c0",
+          "#ffe8e7"
+        ]
+      },
+      "text-red": {
+        "role": "secondary",
+        "displayName": "Text Red",
+        "canonical": "#ff4d63",
+        "tonalRamp": [
+          "#1e0003",
+          "#4f0011",
+          "#850022",
+          "#bf0036",
+          "#ee3b55",
+          "#ff8289",
+          "#ffc2c3",
+          "#ffe8e8"
+        ]
+      },
+      "control-amber": {
+        "role": "secondary",
+        "displayName": "Control Amber",
+        "canonical": "#f5c518",
+        "tonalRamp": [
+          "#100a00",
+          "#312500",
+          "#554300",
+          "#7d6300",
+          "#a78500",
+          "#d3a800",
+          "#fece2c",
+          "#ffeebd"
+        ]
+      },
+      "link-blue": {
+        "role": "secondary",
+        "displayName": "Link Blue",
+        "canonical": "#2b6cd4",
+        "tonalRamp": [
+          "#000924",
+          "#00225a",
+          "#003e96",
+          "#1f60c7",
+          "#4486f0",
+          "#7caeff",
+          "#bcd6ff",
+          "#e5efff"
+        ]
+      },
+      "sleeve-black": {
+        "role": "neutral",
+        "displayName": "Sleeve Black",
+        "canonical": "#0b0b0c",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898a",
+          "#aeaeaf",
+          "#d4d4d5",
+          "#eeeef0"
+        ]
+      },
+      "rule-grey": {
+        "role": "neutral",
+        "displayName": "Rule Grey",
+        "canonical": "#3a3a3c",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#aeaeb0",
+          "#d4d4d6",
+          "#eeeef1"
+        ]
+      },
+      "hairline-grey": {
+        "role": "neutral",
+        "displayName": "Hairline Grey",
+        "canonical": "#242426",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#adadb0",
+          "#d4d4d6",
+          "#eeeef1"
+        ]
+      },
+      "dim-grey": {
+        "role": "neutral",
+        "displayName": "Dim Grey",
+        "canonical": "#9a9a96",
+        "tonalRamp": [
+          "#0b0b09",
+          "#272723",
+          "#454542",
+          "#666663",
+          "#898985",
+          "#aeaeaa",
+          "#d4d4d0",
+          "#efefea"
+        ]
+      },
+      "faint-grey": {
+        "role": "neutral",
+        "displayName": "Faint Grey",
+        "canonical": "#8a8a85",
+        "tonalRamp": [
+          "#0b0b08",
+          "#272723",
+          "#454541",
+          "#666662",
+          "#898984",
+          "#aeaea9",
+          "#d5d5cf",
+          "#efefe9"
+        ]
+      },
+      "hover-ground": {
+        "role": "neutral",
+        "displayName": "Hover Ground",
+        "canonical": "#121213",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898a",
+          "#aeaeaf",
+          "#d4d4d5",
+          "#eeeef0"
+        ]
+      },
+      "field-ground": {
+        "role": "neutral",
+        "displayName": "Field Ground",
+        "canonical": "#131314",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898a",
+          "#aeaeaf",
+          "#d4d4d5",
+          "#eeeef0"
+        ]
+      },
+      "capture-ground": {
+        "role": "neutral",
+        "displayName": "Capture Ground",
+        "canonical": "#101011",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898a",
+          "#aeaeaf",
+          "#d4d4d5",
+          "#eeeef0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The total outstanding — the page's largest type and its only headline; right-aligned to the figures' shared edge."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles in Rajdhani, sentence case (24–26px)."
+      },
+      "amount": {
+        "displayName": "Amount",
+        "purpose": "The row figure in the sequence; the ₹ rides smaller (15px) and fainter so the number is read first."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Data voice at UI scale: pair values and field text at 16px; table numerals step to 14px and page codes to 11px inside the same mono."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose and hints in Mukta; the reminder message steps to 17px/1.75 for Devanagari."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tracked caps for captions, table headers, key faces, nav and controls (11–14px, 0.10–0.16em)."
+      },
+      "code": {
+        "displayName": "Catalogue code",
+        "purpose": "Entry numbers in mono at 11px, Text Red; 15px on the decoded row. Page codes in the ledger table use the same step."
+      },
+      "lineage": {
+        "displayName": "Lineage",
+        "purpose": "The one-line history under a decoded name: 11.5px mono, Dim Grey, middot-separated."
+      },
+      "hint": {
+        "displayName": "Hint",
+        "purpose": "Explanatory prose at 13px Mukta in Faint Grey — the sentence under a control, never the control's own label."
+      },
+      "reading": {
+        "displayName": "Reading",
+        "purpose": "The customer's name at 15px Mukta on a decoded row, and table prose at the same size."
+      },
+      "message": {
+        "displayName": "Message",
+        "purpose": "The reminder itself in the customer's language: Mukta 17px/1.75 so Devanagari and Latin read at the same size."
+      },
+      "control-label": {
+        "displayName": "Control label",
+        "purpose": "Tracked caps inside buttons, keys and field captions at 12px/0.16em."
+      }
+    },
+    "shadows": [
+      {
+        "name": "current-page-underline",
+        "value": "inset 0 -2px 0 0 #c8102e",
+        "purpose": "The only shadow token in the system: a 2px inset underline on the active topbar link. An underline drawn with the shadow property; never depth."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The shared exponential ease-out (--ease) used by the decode."
+      },
+      {
+        "name": "decode-open",
+        "value": "grid-template-rows 460ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The one authored moment: a coded row expands (0fr → 1fr) into name, history and message."
+      },
+      {
+        "name": "decode-inner",
+        "value": "transform 320ms cubic-bezier(0.16, 1, 0.3, 1) 80ms",
+        "purpose": "The panel's inner block lifts from -4px to none, delayed behind the row's expansion."
+      },
+      {
+        "name": "disclosure-chevron",
+        "value": "transform 150ms ease",
+        "purpose": "The drawn hairline chevron flips 45° to -135° when a details block opens."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "prefers-reduced-motion disables the decode and chevron transitions; the interaction itself still works."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "560px",
+        "purpose": "Narrow screens: shop name drops from the brand, table padding tightens, page-code column collapses, sequence grid narrows to 38px 8px 1fr auto."
+      },
+      {
+        "name": "md",
+        "value": "600px",
+        "purpose": "The primary action stops stretching to full width (max-width 420px)."
+      },
+      {
+        "name": "stack",
+        "value": "640px",
+        "purpose": "The review grid stacks into labelled blocks; every field keeps its data-label caption and every control stays 44px."
+      }
+    ],
+    "identityHues": {
+      "source": "udhaar/plot.py · plot.strip_for(name_key) = sha1(name) % 6 — stable per customer across pages and sessions.",
+      "note": "Data, not system colour: these six are the only hues a customer mark may take, and the hue never carries state.",
+      "hues": [
+        {
+          "name": "crimson",
+          "value": "#c8102e"
+        },
+        {
+          "name": "amber",
+          "value": "#f5c518"
+        },
+        {
+          "name": "blue",
+          "value": "#2b6cd4"
+        },
+        {
+          "name": "green",
+          "value": "#6aa84f"
+        },
+        {
+          "name": "violet",
+          "value": "#a15ee0"
+        },
+        {
+          "name": "teal",
+          "value": "#2aa8a0"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Customer Mark",
+      "kind": "custom",
+      "description": "The identity device for a counter-facing screen: a 26×34px block whose 6px slab carries one of six hashed hues, stepping to 10×44px on the one row whose name is showing. Filled means credit given; hollow with a 16px struck rule means money received — state is drawn, never left to colour, so greyscale and print survive it.",
+      "html": "<div class=\"ds-canvas\"><span class=\"ds-mark\" style=\"--strip: #a15ee0\" aria-hidden=\"true\"></span><span class=\"ds-mark ds-mark-received\" style=\"--strip: #2aa8a0\" aria-hidden=\"true\"></span><span class=\"ds-mark ds-mark-plate\" style=\"--strip: #a15ee0\" aria-hidden=\"true\"></span></div>",
+      "css": ".ds-canvas { display: flex; gap: 24px; align-items: center; background: var(--ground, #0b0b0c); padding: 16px; } .ds-mark { display: block; width: 26px; height: 34px; position: relative; } .ds-mark::before { content: \"\"; position: absolute; left: 0; top: 0; width: 6px; height: 100%; background: var(--strip, #9a9a96); box-sizing: border-box; } .ds-mark-received::before { background: none; border: 1px solid var(--strip, #9a9a96); } .ds-mark-received::after { content: \"\"; position: absolute; left: -3px; top: 50%; width: 16px; height: 1px; background: var(--strip, #9a9a96); } .ds-mark-plate { height: 44px; } .ds-mark-plate::before { width: 10px; }"
+    },
+    {
+      "name": "Action Button — Hairline",
+      "kind": "button",
+      "refersTo": "action-outline",
+      "description": "The secondary action: a 52px hairline bar that inverts to white on hover, dropping to a 44px auto-width button via .ds-act-small. Used for Add a line, Start over and page-to-page links — never for the one action a row exists to offer.",
+      "html": "<div class=\"ds-canvas\"><button class=\"ds-act\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"1\"/><path d=\"M5 15V5a1 1 0 0 1 1-1h10\"/></svg>Copy the message</button></div>",
+      "css": ".ds-canvas { background: var(--ground, #0b0b0c); padding: 16px; } .ds-act { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; padding: 0 18px; border: 1px solid var(--ink, #f2f2ef); border-radius: 2px; background: none; color: var(--ink, #f2f2ef); font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; } @media (min-width: 600px) { .ds-act:not(.ds-act-small) { max-width: 420px; } } .ds-act:hover { background: var(--ink, #f2f2ef); color: var(--ground, #0b0b0c); } .ds-act:focus-visible { outline: 2px solid var(--amber, #f5c518); outline-offset: 2px; } .ds-act:disabled { color: var(--ink-faint, #8a8a85); border-color: var(--rule, #3a3a3c); background: none; cursor: not-allowed; } .ds-act svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.6; } .ds-act-small { width: auto; min-height: 44px; padding: 0 16px; }"
+    },
+    {
+      "name": "Quiet Action — text link",
+      "kind": "link",
+      "refersTo": "action-quiet",
+      "description": "The third rank: a caps text link on a 1px Rule Grey bottom border, 44px tall, Dim Grey lifting to white on hover. The WhatsApp handoff rides here, ranked under the one solid Copy action in a decoded row, so the eye is never asked to choose between equals.",
+      "html": "<div class=\"ds-canvas\"><a class=\"ds-quiet\" href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 20l1.3-4A8 8 0 1 1 8 18.7z\"/></svg>Open in WhatsApp</a></div>",
+      "css": ".ds-canvas { background: var(--ground, #0b0b0c); padding: 16px; } .ds-quiet { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; color: var(--ink-dim, #9a9a96); font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--rule, #3a3a3c); } .ds-quiet:hover { color: var(--ink, #f2f2ef); border-color: var(--ink-dim, #9a9a96); } .ds-quiet svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; }"
+    },
+    {
+      "name": "Action Button — Solid",
+      "kind": "button",
+      "refersTo": "action-solid",
+      "description": "The one primary action on a screen: white ground, black text, 52px tall, full width up to 420px; hover flips the whole button to amber. Used for Read this page, Copy the message in every decoded row, and Save to the ledger.",
+      "html": "<div class=\"ds-canvas\"><button class=\"ds-act ds-act-solid\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15\"/><path d=\"M13 6l6 6-6 6\"/></svg>Read this page</button></div>",
+      "css": ".ds-canvas { background: var(--ground, #0b0b0c); padding: 16px; } .ds-act { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; padding: 0 18px; border: 1px solid var(--ink, #f2f2ef); border-radius: 2px; background: none; color: var(--ink, #f2f2ef); font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; } @media (min-width: 600px) { .ds-act:not(.ds-act-small) { max-width: 420px; } } .ds-act:focus-visible { outline: 2px solid var(--amber, #f5c518); outline-offset: 2px; } .ds-act svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.6; } .ds-act-solid { background: var(--ink, #f2f2ef); color: var(--ground, #0b0b0c); } .ds-act-solid:hover { background: var(--amber, #f5c518); border-color: var(--amber, #f5c518); color: var(--ground, #0b0b0c); }"
+    },
+    {
+      "name": "Key — small square control",
+      "kind": "chip",
+      "refersTo": "key",
+      "description": "A 44px square hairline control for the three language keys and the Reveal/Conceal toggle. The active or pressed key fills amber with black text — the only filled key on a screen.",
+      "html": "<div class=\"ds-canvas\"><button class=\"ds-key\" type=\"button\">EN</button><button class=\"ds-key\" type=\"button\">हिं</button><button class=\"ds-key ds-key-active\" type=\"button\" aria-pressed=\"true\">मर</button><button class=\"ds-key\" type=\"button\" aria-pressed=\"false\">Reveal</button></div>",
+      "css": ".ds-canvas { display: flex; gap: 4px; align-items: center; background: var(--ground, #0b0b0c); padding: 16px; } .ds-key { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 10px; border: 1px solid var(--rule, #3a3a3c); border-radius: 2px; background: none; color: var(--ink-dim, #9a9a96); font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; } .ds-key:hover { color: var(--ink, #f2f2ef); border-color: var(--ink-dim, #9a9a96); } .ds-key:focus-visible { outline: 2px solid var(--amber, #f5c518); outline-offset: 2px; } .ds-key[aria-pressed='true'], .ds-key-active { color: var(--ground, #0b0b0c); background: var(--amber, #f5c518); border-color: var(--amber, #f5c518); }"
+    },
+    {
+      "name": "Field — mono value with caps caption",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A caps caption above a field-ground box: mono 16px value, 48px tall, 2px corners, amber caret, faint placeholder, border lifting to Faint Grey on hover. Number fields have their spinners removed because a money field is typed, not nudged.",
+      "html": "<div class=\"ds-canvas\"><label class=\"ds-field\"><span class=\"ds-field-cap\">On-device reader</span><input type=\"text\" value=\"560\" /></label></div>",
+      "css": ".ds-canvas { background: var(--ground, #0b0b0c); padding: 16px; } .ds-field { display: block; width: 100%; max-width: 420px; } .ds-field-cap { display: block; margin-bottom: 8px; font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim, #9a9a96); } .ds-field input { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--rule, #3a3a3c); border-radius: 2px; background: #131314; color: var(--ink, #f2f2ef); font-family: var(--fig, Spline Sans Mono, ui-monospace, Consolas, monospace); font-size: 16px; caret-color: var(--amber, #f5c518); } .ds-field input::placeholder { color: var(--ink-faint, #8a8a85); } .ds-field input:hover { border-color: var(--ink-faint, #8a8a85); } .ds-field input:focus-visible { outline: 2px solid var(--amber, #f5c518); outline-offset: 2px; }"
+    },
+    {
+      "name": "Coded Row and Decode",
+      "kind": "custom",
+      "description": "The signature interaction. At rest a row is the catalogue entry: its number (01 upward in the order to ask), its hue mark, an empty name slot, and the amount. On touch it expands (grid-template-rows 0fr → 1fr, 460ms) into the customer's name, page, history and the reminder to send, while the entry number steps to 15px and the mark to 10×44px. The panel is clipped by an overflow-hidden wrapper, never opacity- or visibility-hidden, so search, screen readers and print still reach it; its controls are inert while closed. The markup below shows the first row decoded, as it ships.",
+      "html": "<ol class=\"ds-seq\"><li class=\"ds-entry\"><button class=\"ds-row\" type=\"button\" aria-expanded=\"true\" aria-controls=\"ds-d1\"><span class=\"ds-code\">01</span><span class=\"ds-mark\" style=\"--strip: #a15ee0\" aria-hidden=\"true\"></span><span class=\"ds-who ds-decoded\">Prakash Jha</span><span class=\"ds-amount\"><span class=\"ds-drop\">₹</span>560</span></button><div class=\"ds-decode ds-open\" id=\"ds-d1\"><div><div class=\"ds-decode-inner\"><span class=\"ds-lineage\">1 line · last 15/10 · ₹560 given</span><p class=\"ds-message\" lang=\"mr\">नमस्कार Prakash Jha जी, ₹560 बाकी आहे — फक्त आठवण.</p><button class=\"ds-act ds-act-small\" type=\"button\">Copy the message</button></div></div></div></li><li class=\"ds-entry\"><button class=\"ds-row\" type=\"button\" aria-expanded=\"false\" aria-controls=\"ds-d2\"><span class=\"ds-code\">01</span><span class=\"ds-mark ds-mark-received\" style=\"--strip: #2aa8a0\" aria-hidden=\"true\"></span><span class=\"ds-who\"></span>/span><span class=\"ds-amount\">505</span></button><div class=\"ds-decode\" id=\"ds-d2\"><div><div class=\"ds-decode-inner\"><span class=\"ds-lineage\">2 lines · last 12/10</span></div></div></div></li></ol>",
+      "css": ".ds-seq { list-style: none; margin: 0; padding: 16px; background: var(--ground, #0b0b0c); } .ds-entry { border-top: 1px solid var(--rule, #3a3a3c); } .ds-entry:last-child { border-bottom: 1px solid var(--rule, #3a3a3c); } .ds-row { display: grid; grid-template-columns: 44px 6px 1fr auto; align-items: center; gap: 14px; width: 100%; min-height: 68px; padding: 8px 2px; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; font-family: var(--read, Mukta, system-ui, sans-serif); } .ds-row:hover { background: #121213; } .ds-row:focus-visible { outline: 2px solid var(--amber, #f5c518); outline-offset: 2px; } .ds-code { font-family: var(--fig, Spline Sans Mono, ui-monospace, Consolas, monospace); font-size: 11px; letter-spacing: 0.04em; color: var(--red-bright, #ff4d63); } .ds-mark { display: block; width: 26px; height: 34px; position: relative; } .ds-mark::before { content: \"\"; position: absolute; left: 0; top: 0; width: 8px; height: 100%; background: var(--strip, #9a9a96); box-sizing: border-box; } .ds-mark-received::before { background: none; border: 1px solid var(--strip, #9a9a96); } .ds-mark-received::after { content: \"\"; position: absolute; left: -2px; top: 50%; width: 12px; height: 1px; background: var(--strip, #9a9a96); } .ds-who { font-size: 15px; color: var(--ink-dim, #9a9a96); } .ds-who.ds-decoded { color: var(--ink, #f2f2ef); } .ds-amount { font-family: var(--fig, Spline Sans Mono, ui-monospace, Consolas, monospace); font-variant-numeric: tabular-nums; font-size: 21px; letter-spacing: -0.01em; white-space: nowrap; color: var(--ink, #f2f2ef); } .ds-amount .ds-drop { color: var(--ink-faint, #8a8a85); font-size: 15px; } .ds-decode { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 460ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-decode.ds-open { grid-template-rows: 1fr; } .ds-decode > div { overflow: hidden; } .ds-decode-inner { padding: 0 2px 22px 66px; transform: translateY(-4px); transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1) 80ms; } .ds-decode.ds-open .ds-decode-inner { transform: none; } .ds-lineage { font-family: var(--fig, Spline Sans Mono, ui-monospace, Consolas, monospace); font-size: 11.5px; color: var(--ink-faint, #8a8a85); } .ds-message { font-size: 16px; line-height: 1.6; color: var(--ink, #f2f2ef); margin: 10px 0 0; max-width: 34ch; } .ds-message[lang='mr'] { font-size: 17px; line-height: 1.75; } .ds-decode-inner .ds-act { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; margin-top: 16px; padding: 0 16px; border: 1px solid var(--ink, #f2f2ef); border-radius: 2px; background: none; color: var(--ink, #f2f2ef); font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; } .ds-decode-inner .ds-act:hover { background: var(--ink, #f2f2ef); color: var(--ground, #0b0b0c); } @media (max-width: 560px) { .ds-row { grid-template-columns: 38px 6px 1fr auto; gap: 10px; } .ds-decode-inner { padding-left: 56px; } } @media (prefers-reduced-motion: reduce) { .ds-decode, .ds-decode-inner { transition: none; } } .ds-row[aria-expanded=\"true\"] .ds-code { font-size: 15px; } .ds-row[aria-expanded=\"true\"] .ds-mark { height: 44px; } .ds-row[aria-expanded=\"true\"] .ds-mark::before { width: 10px; }"
+    },
+    {
+      "name": "The Total (headline figure)",
+      "kind": "custom",
+      "description": "The page's only headline: the total outstanding set in Spline Sans Mono at clamp(40px, 13vw, 62px), right-aligned to the same edge as every figure below it. It is the one place brand voice is allowed to shout.",
+      "html": "<div class=\"ds-canvas\"><span class=\"ds-total\">₹2,210</span></div>",
+      "css": ".ds-canvas { background: var(--ground, #0b0b0c); padding: 16px; } .ds-total { display: block; text-align: right; font-family: var(--fig, Spline Sans Mono, ui-monospace, Consolas, monospace); font-variant-numeric: tabular-nums; font-size: clamp(40px, 13vw, 62px); line-height: 1; letter-spacing: -0.02em; color: var(--ink, #f2f2ef); }"
+    },
+    {
+      "name": "Plot Band (one hairline per customer)",
+      "kind": "custom",
+      "description": "The field-owning device on the ask screen: one white hairline per customer still to ask, its length carrying the balance, the selected line at 2.5 weight, and a 10px red tick where a customer has both taken credit and paid some back. preserveAspectRatio=none with a fixed pixel height keeps the band the same physical height on a phone as on a desk; non-scaling-stroke keeps every line exactly 1px. The height is capped at 118px: past eighteen dues the remainder is one dashed hairline standing for everyone else added together, so the first message stays above the fold.",
+      "html": "<svg class=\"ds-plot\" viewBox=\"0 0 700 34\" preserveAspectRatio=\"none\" style=\"height: 34px\" role=\"img\" aria-label=\"One hairline per customer, its length showing what they still owe. A red tick marks a customer who has both taken credit and paid some back.\"><line class=\"ds-rail\" x1=\"0.5\" y1=\"0\" x2=\"0.5\" y2=\"34\" /><line class=\"ds-line ds-sel\" x1=\"0\" y1=\"6\" x2=\"420\" y2=\"6\" /><line class=\"ds-tick\" x1=\"200\" y1=\"1\" x2=\"200\" y2=\"11\" /><line class=\"ds-line\" x1=\"0\" y1=\"18\" x2=\"250\" y2=\"18\" /><line class=\"ds-line\" x1=\"0\" y1=\"30\" x2=\"120\" y2=\"30\" /></svg>",
+      "css": ".ds-plot { display: block; width: 100%; background: var(--ground, #0b0b0c); } .ds-plot line { vector-effect: non-scaling-stroke; } .ds-plot .ds-line { stroke: var(--ink, #f2f2ef); stroke-width: 1; } .ds-plot .ds-line.ds-sel { stroke-width: 2.5; } .ds-plot .ds-tick { stroke: var(--red, #c8102e); stroke-width: 1.5; } .ds-plot .ds-rail { stroke: var(--hair, #242426); stroke-width: 1; }"
+    },
+    {
+      "name": "Hairline Data Table",
+      "kind": "card",
+      "description": "The ledger table: caps headers ruled in Rule Grey, hairline rows, mono numerals right-aligned, the whole line darkening on hover, and each customer row carrying its hue mark. A cleared balance drops to Dim Grey so settled and outstanding are told apart without colour.",
+      "html": "<table class=\"ds-table\"><thead><tr><th>Customer</th><th class=\"ds-num\">Given</th><th class=\"ds-num\">Paid</th><th class=\"ds-num\">Balance</th></tr></thead><tbody><tr><td><span class=\"ds-mark\" style=\"--strip: #f5c518\" aria-hidden=\"true\"></span>Imran Shaikh</td><td class=\"ds-num\">1,000</td><td class=\"ds-num\">495</td><td class=\"ds-num\">505</td></tr><tr><td><span class=\"ds-mark ds-mark-received\" style=\"--strip: #6aa84f\" aria-hidden=\"true\"></span>Ganesh Kulkarni</td><td class=\"ds-num\">300</td><td class=\"ds-num\">0</td><td class=\"ds-num ds-neg\">0</td></tr></tbody></table>",
+      "css": ".ds-table { width: 100%; border-collapse: collapse; background: var(--ground, #0b0b0c); color: var(--ink, #f2f2ef); font-family: var(--read, Mukta, system-ui, sans-serif); font-size: 14px; } .ds-table th { font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim, #9a9a96); text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--rule, #3a3a3c); white-space: nowrap; } .ds-table td { padding: 10px 8px; border-bottom: 1px solid var(--hair, #242426); vertical-align: middle; } .ds-table tr:hover td { background: #121213; } .ds-table .ds-num { font-family: var(--fig, Spline Sans Mono, ui-monospace, Consolas, monospace); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; } .ds-table .ds-neg { color: var(--ink-dim, #9a9a96); } .ds-mark { display: inline-block; width: 26px; height: 22px; position: relative; vertical-align: middle; margin-right: 10px; } .ds-mark::before { content: \"\"; position: absolute; left: 0; top: 0; width: 8px; height: 100%; background: var(--strip, #9a9a96); box-sizing: border-box; } .ds-mark-received::before { background: none; border: 1px solid var(--strip, #9a9a96); } .ds-mark-received::after { content: \"\"; position: absolute; left: -2px; top: 50%; width: 12px; height: 1px; background: var(--strip, #9a9a96); }"
+    },
+    {
+      "name": "Topbar and Navigation",
+      "kind": "nav",
+      "description": "A 56px sticky bar ruled along its bottom edge: drawn brand glyph with a single red tick, Rajdhani caps brand name, the shop's own name in faint caps (dropped under 560px), and three caps nav items whose current page takes a 2px inset red underline.",
+      "html": "<header class=\"ds-topbar\"><a class=\"ds-brand\" href=\"#\"><svg class=\"ds-glyph\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 5h18\"/><path d=\"M3 11h12\"/><path d=\"M3 17h7\"/><path class=\"ds-tick\" d=\"M16 9v4\"/></svg><span class=\"ds-name\">Udhaar Book</span><span class=\"ds-shop\">Suresh Kirana</span></a><nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Read</a><a href=\"#\">Ledger</a><a href=\"#\">Ask</a></nav></header>",
+      "css": ".ds-topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 56px; padding: 0 18px; background: var(--ground, #0b0b0c); color: var(--ink, #f2f2ef); border-bottom: 1px solid var(--rule, #3a3a3c); } .ds-brand { display: flex; align-items: center; gap: 10px; min-height: 44px; text-decoration: none; color: inherit; } .ds-glyph { width: 20px; height: 20px; flex: none; stroke: var(--ink, #f2f2ef); fill: none; stroke-width: 1.6; } .ds-glyph .ds-tick { stroke: var(--red-bright, #ff4d63); } .ds-name { font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 700; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; } .ds-shop { font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint, #8a8a85); } .ds-nav { display: flex; gap: 2px; } .ds-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 12px; font-family: var(--cap, Rajdhani, system-ui, sans-serif); font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim, #9a9a96); text-decoration: none; } .ds-nav a:hover { color: var(--ink, #f2f2ef); } .ds-nav a[aria-current='page'] { color: var(--ink, #f2f2ef); box-shadow: inset 0 -2px 0 0 var(--red, #c8102e); } @media (max-width: 560px) { .ds-shop { display: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Catalogue",
+    "overview": "A Saville catalogue sleeve: a matte black board with one white hairline plot printed across it, hue strips standing where the names should be, and the amount as the only headline. The sleeve is the whole page — there is no card, no panel, no raised surface anywhere in it. Everything the eye needs is drawn in 1px rules on the black. The world was chosen for a counter that other people can see: a screen facing a shop does not get to print a customer's name by default, so identity is issued as a code and the code is only decoded when someone touches it.\n\nThe screen's job supplies its discipline. The shopkeeper's question is \"who do I ask tonight, and what do I say to them\", never \"how much is owed in total\" — so the figure is the page's largest type, the sequence runs in the order the money stands, and the message is written in the customer's own language and script. Rate the world by its own promise: strip the copy and it is still recognisable as black field, hairline ruling, one white plot, four columns. Strip the colour and it still reads, because given and received are drawn in the mark's form, not in its hue.\n\nThe material is deliberately flat and deliberately printed: no shadow, no gradient, no blur, no illustration, no photograph, no icon font. Two category defaults are rejected by name — the white dashboard ground with stat cards above a table and a blue primary action below, and the warm cream paper ground that finance apps reach for when they want to look human. This system takes the cold sleeve instead, and keeps its affection for the millimetres a customer's colour occupies.",
+    "keyCharacteristics": [
+      "Matte sleeve-black ground (#0b0b0c); nothing sits on it — everything is drawn on it.",
+      "One white hairline plot owns the field on the ask screen; one hairline per customer still to ask.",
+      "Identity is a 26×34px mark built from an 8px hue slab, in one of six hues hashed from the name.",
+      "State is carried in code as well as colour: a filled slab is credit given, a hollow slab with a struck rule is money received.",
+      "Every rupee figure is Spline Sans Mono with tabular numerals, right-aligned to one shared edge.",
+      "The amount is the only headline; nothing else on a page is allowed that size.",
+      "Collapsed rows are clipped, never hidden — search, screen readers and print still reach every word.",
+      "No cards, no shadows, no elevation; structure is 1px rules and 2px corners.",
+      "Phone-first: 390px is the composition, 44px is the minimum target, and the review grid stacks rather than clips."
+    ],
+    "rules": [
+      {
+        "name": "The Structural Red Rule",
+        "body": "#c8102e is for structure, never for words: ticks, counters, rules, the camera glyph. Any red that has to be read is #ff4d63. The two are not interchangeable, and the darker one never sets text on the black.",
+        "section": "colors"
+      },
+      {
+        "name": "The Six Hues Rule",
+        "body": "A strip's colour is identity, not state. It says which customer, never what happened — the mark's form carries given and received — so the same hue can sit on a paid row and an unpaid one, and a hue is never spent on decoration, a series, or a legend.",
+        "section": "colors"
+      },
+      {
+        "name": "The Amber-Is-a-Control Rule",
+        "body": "Amber appears only where the finger is or where the page has just answered: the active key, the focus ring, the caret, selection, the copied flash. It is never a headline, a section marker, a badge, or a decorative underline.",
+        "section": "colors"
+      },
+      {
+        "name": "The Figure Rule",
+        "body": "Every rupee figure is Spline Sans Mono with tabular numerals, and every figure on a page shares one right edge. No figure is set in Mukta and no prose in mono; the two voices do not swap.",
+        "section": "typography"
+      },
+      {
+        "name": "The Caps-Are-Labels Rule",
+        "body": "Uppercase Rajdhani belongs to labels — captions, table headers, key faces, nav, controls — at 11–14px with 0.10–0.16em of tracking. Anything that has to speak at heading scale is the same face in sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Right Edge Rule",
+        "body": "Every figure on a page — the total, the row amounts, the given/paid/balance columns, the pair values — right-aligns to one edge, so magnitudes compare without a legend or a chart.",
+        "section": "layout"
+      },
+      {
+        "name": "The Phone-Is-the-Baseline Rule",
+        "body": "390px is the composition, not the compression: 18px page padding, 44px minimum target, 48px fields, 52px primary action inside thumb reach. A layout that only works because the phone was an afterthought is wrong.",
+        "section": "layout"
+      },
+      {
+        "name": "The No-Elevation Rule",
+        "body": "No shadow, no glow, no blur, no gradient, no raised surface. If something must separate, draw a 1px rule; if something must respond, shift two greys.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two-Pixel Corner Rule",
+        "body": "Corners stay at 2px. Nothing is a pill, nothing is a rounded card, nothing is a circle — the camera lens is a drawn path inside a drawn glyph, not a radius.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Drawn-Affordance Rule",
+        "body": "Every affordance is geometry, not a character: chevrons are borders, icons are inline SVG on a 24-unit grid at 1.4–1.6 stroke, and no Unicode glyph, emoji or dingbat stands in for a drawn mark.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Clip-Not-Hide Rule",
+        "body": "When a panel closes, its words stay in the document: collapse by clipping — an overflow: hidden wrapper inside a 0fr row — never opacity: 0, visibility: hidden or display: none on the panel's text. Search, screen readers, and print all reach a row nobody has opened.",
+        "section": "components"
+      },
+      {
+        "name": "The First Row Decoded Rule",
+        "body": "Any screen that ships a sequence of coded rows arrives with its first row decoded. The mechanism is shown, not explained.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do draw structure with 1px rules — Rule Grey (#3a3a3c) to separate, Hairline Grey (#242426) to whisper — and let the black ground show through everywhere else.",
+      "Do put every rupee figure in Spline Sans Mono with tabular numerals on the page's one right edge.",
+      "Do carry state in form as well as colour: filled slab versus hollow-and-struck, figure plain versus figure struck through.",
+      "Do keep targets at 44px minimum, the primary action at 52px, fields at 48px, and page padding at 18px.",
+      "Do use Structure Crimson (#c8102e) for structure and Text Red (#ff4d63) whenever red must be read.",
+      "Do ship the first row decoded, and give every disclosure a drawn chevron and a 44px target.",
+      "Do keep the reminder message at 34ch and step Devanagari to 17px/1.75."
+    ],
+    "donts": [
+      "Don't add a card, a shadow, a glow, or a raised surface: depth is at most a two-grey value shift (#121213, #131314, #101011).",
+      "Don't put a customer's name into a closed row's visible text — it carries the page code, the hue mark, the line count and the figure, and the name arrives through the decode.",
+      "Don't spend amber on anything but a live control, focus, selection, or a confirmation.",
+      "Don't swap the two voices: no figures in Mukta, no prose in mono.",
+      "Don't round a corner past 2px, and don't draw a pill.",
+      "Don't use a glyph, emoji, dingbat or icon font where a drawn mark belongs.",
+      "Don't invent a new grey or a new red; the surface ladder and the two reds are closed sets.",
+      "Don't let a table clip or scroll sideways — on the phone the review grid stacks with its labels instead."
+    ]
+  }
+}

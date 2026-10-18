@@ -36,7 +36,7 @@
   </main>
 
   <footer>
-    <div class="wrap">The page is read by <strong>{% if ocr_backends %}{{ ocr_backends|join(', ') }} on this machine{% else %}an open-weight model lane{% endif %}</strong> and kept in one SQLite file. No account, no per-entry fee.</div>
+    <div class="wrap">Read by <strong>{{ reader_line }}</strong>. Kept in one SQLite file. No account, no per-entry fee.</div>
   </footer>
   {% block scripts %}{% endblock %}
 </body>

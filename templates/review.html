@@ -69,7 +69,7 @@
 
 <details style="margin-top: 30px">
   <summary class="cap" style="cursor: pointer">Raw text read off the page</summary>
-  <pre>{{ ocr_text or '(no OCR text — the model read the image directly)' }}</pre>
+  <pre>{{ ocr_text or ('(no text — a vision model read the photo directly, so there is no transcription to show)' if lane_kind not in ('deterministic', 'fallback') else '(no text — nothing on this machine could read the photo, so nothing was extracted)') }}</pre>
 </details>
 
 {% endblock %}

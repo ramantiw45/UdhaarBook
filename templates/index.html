@@ -37,13 +37,18 @@
       </select>
     </label>
     <p class="hint">
-      {% if ocr_backends %}
+      {% if reader_state == 'ocr' %}
         Ready: <code>{{ ocr_backends|join(', ') }}</code>. This reads the page on
         this machine, so the photo never has to go anywhere.
+      {% elif reader_state == 'lane' %}
+        No local reader is installed, so the page goes to the model lane instead:
+        <code>{{ reader_line }}</code>. Add the on-device reader when you want the
+        photo to stay on the machine — <code>pip install -r requirements-ocr.txt</code>.
       {% else %}
-        No local reader is installed, so the page goes to the model lane instead.
-        Add one when you want the photo to stay on the machine:
-        <code>pip install -r requirements-ocr.txt</code>.
+        Nothing on this machine can read a photo right now: no on-device reader is
+        installed (<code>pip install -r requirements-ocr.txt</code>) and no model
+        lane has a key. The sample page still walks the whole flow, and either one
+        of those wiring jobs turns the camera on.
       {% endif %}
     </p>
   </div>

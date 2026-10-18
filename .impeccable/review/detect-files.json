@@ -27,7 +27,7 @@
     "category": "slop",
     "file": "C:\\Users\\Raman Tiwari\\MyDevelopments\\UdhaarBook\\templates\\base.html",
     "line": 0,
-    "snippet": ".mark::before ΓÇö absolute 8px pseudo-element stripe (left: 0)"
+    "snippet": ".mark::before ΓÇö absolute 6px pseudo-element stripe (left: 0)"
   },
   {
     "antipattern": "side-tab",
@@ -36,7 +36,7 @@
     "severity": "warning",
     "category": "slop",
     "file": "C:\\Users\\Raman Tiwari\\MyDevelopments\\UdhaarBook\\static\\style.css",
-    "line": 197,
-    "snippet": ".mark::before ΓÇö absolute 8px pseudo-element stripe (left: 0)"
+    "line": 208,
+    "snippet": ".mark::before ΓÇö absolute 6px pseudo-element stripe (left: 0)"
   }
 ]
