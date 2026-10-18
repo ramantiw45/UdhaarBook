@@ -1,0 +1,31 @@
+# Render Blueprint — free tier, no database service needed (SQLite file).
+# Deploy: New + > Blueprint > point at this repo.
+services:
+  - type: web
+    name: udhaar-book
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      - key: SHOP_NAME
+        value: Suresh Kirana
+      - key: SHOP_LANG
+        value: mr
+      # Set this in the Render dashboard (free key, no card):
+      # https://aistudio.google.com/apikey
+      - key: AI_STUDIO_API_KEY
+        sync: false
+      - key: AI_STUDIO_MODEL
+        value: gemma-3-27b-it
+      # Optional failover lane
+      - key: GROQ_API_KEY
+        sync: false
+      # Free instances have an ephemeral disk: the ledger resets on redeploy.
+      # Fine for a demo; a real shop backs up the .db file.
+      - key: UDHAAR_DB
+        value: data/udhaar.db

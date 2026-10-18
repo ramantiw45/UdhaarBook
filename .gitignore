@@ -1,0 +1,16 @@
+.env
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+data/*.db
+data/*.db-journal
+uploads/
+*.log
+
+# Real shop photos and customer names must NEVER be committed.
+field-photos/
+samples/real/
+
+# Design-review harnesses (_*.html in static/) never ship.
+static/_*.html

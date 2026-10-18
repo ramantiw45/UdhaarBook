@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% set nav = 'ledger' %}
+{% block title %}The book · Udhaar Book{% endblock %}
+{% block content %}
+
+<h1 style="font-size: 26px">The book</h1>
+<p class="hint" style="margin: 10px 0 24px">
+  One row per customer, in the order the money stands. Colour beside a name is
+  that customer's code on the asking screen — the same person is the same
+  colour every time.
+</p>
+
+{% if balances %}
+<div class="pairs" style="margin-bottom: 30px">
+  <div class="pair"><span class="k">Credit given</span><span class="v">₹{{ '{:,.0f}'.format(totals.given) }}</span></div>
+  <div class="pair"><span class="k">Money received</span><span class="v">₹{{ '{:,.0f}'.format(totals.received) }}</span></div>
+  <div class="pair"><span class="k">Still outstanding</span><span class="v">₹{{ '{:,.0f}'.format(totals.outstanding) }}</span></div>
+  <div class="pair"><span class="k">Customers</span><span class="v">{{ totals.customers }}</span></div>
+</div>
+
+<table class="lines">
+  <thead>
+    <tr>
+      <th class="col-page">Page</th>
+      <th>Customer</th>
+      <th style="text-align: right">Given</th>
+      <th style="text-align: right">Paid</th>
+      <th style="text-align: right">Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in balances %}
+    <tr>
+      <td class="num col-page" style="color: var(--red-bright)">P{{ '%02d'|format(b.page_no) if b.page_no else '—' }}</td>
+      <td>
+        <span class="mark{% if b.received > 0 %} received{% endif %}" style="--strip: {{ strip_for(b.name_key) }}; height: 22px; display: inline-block; vertical-align: middle; margin-right: 10px"
+              aria-hidden="true"></span>{{ b.name }}
+      </td>
+      <td class="num">{{ '{:,.0f}'.format(b.given) }}</td>
+      <td class="num">{{ '{:,.0f}'.format(b.received) }}</td>
+      <td class="num {% if b.balance > 0 %}pos{% else %}neg{% endif %}">{{ '{:,.0f}'.format(b.balance) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2 class="cap" style="margin: 40px 0 12px">The last {{ recent|length }} lines written down</h2>
+<table class="lines">
+  <thead>
+    <tr><th>Date</th><th>Customer</th><th>For</th><th>Direction</th><th style="text-align: right">Amount</th></tr>
+  </thead>
+  <tbody>
+    {% for r in recent %}
+    <tr>
+      <td class="num">{{ r.txn_date or '—' }}</td>
+      <td>{{ r.name }}</td>
+      <td style="color: var(--ink-dim)">{{ r.note or '—' }}</td>
+      <td class="cap" style="color: var(--ink-dim)">{{ 'paid' if r.direction == 'payment' else 'given' }}</td>
+      <td class="num">{{ '{:,.0f}'.format(r.amount) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="tools">
+  <a class="act small" href="/">Read another page</a>
+  <a class="act small" href="/reminders">Who to ask</a>
+  <form method="post" action="/reset" style="display: inline"
+        onsubmit="return confirm('Delete every line in this book? This is the demo ledger.')">
+    <button class="act small" type="submit">Start over</button>
+  </form>
+</div>
+<p class="hint" style="margin-top: 16px">
+  <strong style="color: var(--ink-dim)">P</strong> is the page number of the
+  photograph that line came off, so any figure can be traced back to a page of
+  the book. Nothing here needs a login, and the whole book is one
+  <code>.db</code> file you can copy onto a pen drive.
+</p>
+
+{% else %}
+<div class="empty">
+  <h2>An empty book</h2>
+  <p>Nothing has been written down yet. Read a page of the khata and the balances will appear here.</p>
+  <a class="act small solid" href="/">Read a page of the khata</a>
+</div>
+{% endif %}
+
+{% endblock %}

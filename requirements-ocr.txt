@@ -1,0 +1,18 @@
+# Optional: the honest ON-DEVICE layer.
+#
+# These give you a real local OCR pass on CPU — no GPU, no cloud, no network.
+# Install them if your Python version has wheels; if not, the app still runs
+# (see docs/offline-proof.md) and the vision lane does the reading.
+#
+# Pick ONE:
+
+# (a) PP-OCRv5 via ONNX Runtime — best accuracy per MB, no torch, no GPU.
+rapidocr-onnxruntime>=1.3
+
+# (b) PaddleOCR — heavier, needs paddlepaddle.
+# paddleocr>=2.7
+# paddlepaddle>=2.6
+
+# (c) Tesseract — needs the system binary installed separately, plus Pillow.
+# pytesseract>=0.3.13
+# pillow>=10

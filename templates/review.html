@@ -1,0 +1,84 @@
+﻿{% extends "base.html" %}
+{% set nav = 'read' %}
+{% block title %}Check the page · Udhaar Book{% endblock %}
+{% block content %}
+
+<h1 style="font-size: 24px">Check the page before it is written down</h1>
+<p class="hint" style="margin: 10px 0 24px">
+  {{ source_note }}. A wrong number is worse than no number, so fix anything
+  that is off.
+</p>
+
+{% if errors %}
+<div class="callout stop">
+  <strong class="cap">Lanes that did not answer</strong>
+  <ul>{% for e in errors %}<li><code>{{ e }}</code></li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+{% if warnings %}
+<div class="callout">
+  <strong class="cap">Worth knowing</strong>
+  <ul>{% for w in warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<p class="cap" style="margin: 26px 0 0">{{ rows|length }} transaction{{ '' if rows|length == 1 else 's' }} found</p>
+
+{% if not rows %}
+<p class="hint" style="margin-top: 16px">
+  Nothing to check yet.
+  <a href="/">Go back and tick <strong>use the sample page</strong></a>
+  to walk the whole flow end to end — no camera, no key, nothing installed.
+</p>
+{% endif %}
+
+<table class="lines" id="rows-table">
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Amount</th>
+      <th>Direction</th>
+      <th>For</th>
+      <th>Date</th>
+      <th><span class="sr-only">Remove</span></th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div class="tools">
+  <button class="act small" type="button" id="add-row">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+    Add a line
+  </button>
+  <button class="act solid" type="button" id="save">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>
+    Save to the ledger
+  </button>
+  <span class="cap" id="save-status" role="status" aria-live="polite"></span>
+</div>
+
+{% if skipped %}
+<div class="callout">
+  <strong class="cap">{{ skipped|length }} line{{ '' if skipped|length == 1 else 's' }} nobody could read</strong>
+  <p style="margin-top: 8px">Shown so you can add them by hand. A tool that hides its misses is lying to you.</p>
+  <ul>{% for s in skipped %}<li><code>{{ s }}</code></li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<details style="margin-top: 30px">
+  <summary class="cap" style="cursor: pointer">Raw text read off the page</summary>
+  <pre>{{ ocr_text or '(no OCR text — the model read the image directly)' }}</pre>
+</details>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const ROWS = {{ rows|tojson }};
+  const SCAN_ID = {{ scan_id }};
+  const LANE = {{ lane|tojson }};
+</script>
+<script src="/static/review.js"></script>
+{% endblock %}

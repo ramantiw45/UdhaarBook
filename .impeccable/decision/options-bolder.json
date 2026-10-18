@@ -1,0 +1,90 @@
+{
+  "title": "Bolder hand — six foreign forms, fused with Udhaar Book",
+  "question": "You asked for foreign forms at full commitment, so no grounded direction appears this round. The first dealt challenger leads by deal order. Every card below is fused with the product: the form supplies the system, the product supplies every fact. The canon stays open as always.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Catalogue",
+      "kicker": "THE ROLL",
+      "lineage": "Factory Records / Peter Saville catalog sleeve — matte black, one white hairline plot, hue strips standing in for names",
+      "thesis": "Every page is a catalogue entry. The amount is the only headline, the month's running balance is one white hairline plot owning the field, and customer names are hue strips that decode only when you touch them — so a screen sitting on a public counter never shows who owes what to whoever is standing there.",
+      "palette": ["#0b0b0c", "#f2f2ef", "#c8102e", "#f5c518", "#2b6cd4"],
+      "materials": ["matte black board", "white hairline plot ink", "coded hue strips", "engraved-feel caps"],
+      "viewport": "Matte black. One white hairline plot of the month's running balance owns the field, the selected customer's line lifted to double weight. Below it the sequence, strictly ordered: page number in fac style, a hue strip, the amount right-set. Nothing on screen twice.",
+      "raised": [
+        { "from": "challenger-botanical-folio", "raise": "Every figure at one fixed scale on a shared baseline, so the eye compares without a legend." },
+        { "from": "challenger-midnight-transit-diagram", "raise": "A real crossing, marked where one customer both owes and has paid." },
+        { "from": "challenger-exposure-record", "raise": "The page must survive with all colour stripped out — because it will be printed." }
+      ],
+      "risk": "A designer's object in a shopkeeper's hands. Coded names and hairline plots are beautiful and can read as withholding, which is the exact opposite of this product's promise — and the audience for it may not read plots at all."
+    },
+    {
+      "id": "challenger-doujin-event-catalog",
+      "label": "The Hall Grid",
+      "kicker": "STRONGEST ALTERNATE",
+      "verdict": "wins",
+      "lineage": "convention circle catalog on newsprint — eight hundred stamp-size entries in a numbered grid, forty circled in biro with a route planned between them",
+      "thesis": "The whole book as one packed grid of stamp-size entries, and tonight's asking round as a route through the circled ones. You circle who is worth asking and strike out who you have already asked — the grid and the order you walk are the same space.",
+      "palette": ["#f4f1e8", "#141414", "#c8102e"],
+      "materials": ["newsprint that grays under the thumb", "postage-stamp cells", "a biro circle", "a struck-through mark", "one spot colour, route only"],
+      "viewport": "Newsprint ground, single-ink. Every customer a small cell, name tiny beneath, amount in the cell corner, page number in the margin. Circled cells take the one spot red and a route line threads them in the order to ask them.",
+      "case": "Beats the leader on both axes. Identification: cheap newsprint and a biro circle are objects this shopkeeper holds every day, where a matte black art sleeve is not. Clarity: circled-ask and struck-asked says what to do next, where a hairline plot only says what happened.",
+      "risk": "Packing a whole book onto a phone makes every entry too small to read, and the route has to survive the zoom or the idea collapses into decoration."
+    },
+    {
+      "id": "challenger-emigre-bitmap-specimen",
+      "label": "The Coarse Figure",
+      "verdict": "competitive",
+      "lineage": "Emigre bitmap specimen — coarse pixel letterforms set proudly at poster scale, low resolution as the aesthetic",
+      "thesis": "Legibility is honesty. A figure the page is sure of is set sharp; a figure it could not read is set visibly coarse in dot-matrix, so it cannot be mistaken for certain. The confidence lives in the type — no legend, no percentage, no badge.",
+      "palette": ["#fbfbf7", "#111111", "#1f6f5c"],
+      "materials": ["dot-matrix figures", "integer-multiple pixels", "halftone ground", "newsprint white"],
+      "viewport": "One amount set enormous in coarse pixels, its coarseness carrying how sure the page is; beneath it the same figure in a ruled column, sharp, once a human has confirmed it.",
+      "case": "Holds clarity outright: confidence as resolution needs no explanation, and dot-matrix figures are how every Indian bill and passbook already talks about money. Competition sits on identification — a bitmap type specimen is a designer's object.",
+      "risk": "Coarse type reads as broken rendering to anyone who has not been taught the idea, and there is no time to teach them."
+    },
+    {
+      "id": "challenger-exposure-record",
+      "label": "The One-Colour Page",
+      "verdict": "competitive",
+      "lineage": "darkroom printer's exposure record — translucent sheets over an eleven-step zone ramp, hatch density as quantity, two hatches crossing at ninety degrees marking a conflict",
+      "thesis": "The ledger survives without colour. Value is hatch density inside the ruled column, and an unresolved row is cross-hatched, so a conflict renders in ink alone. A page that works in one colour is a page that prints.",
+      "palette": ["#1b1b18", "#e8e4d9", "#d6006e"],
+      "materials": ["a zone ramp as the only tonal tokens", "hatch density", "tracing-paper sheets that slide aside"],
+      "viewport": "A backlit paper field with ruled columns; each amount carries a hatch weight, the deepest selected, a struck rule disabled, and one magenta used only where a figure has been corrected by hand.",
+      "case": "Holds clarity for printing, glare, and colour-blindness — real conditions at a shop counter. Loses identification: nobody's shop looks like a darkroom, and hatch density is a legend that needs teaching.",
+      "risk": "The product's whole claim is that it needs no teaching; a density legend contradicts the claim on the very screen that has to convert."
+    },
+    {
+      "id": "challenger-botanical-folio",
+      "label": "One Fixed Scale",
+      "verdict": "declined",
+      "lineage": "botanical folio — one plant across five plates, each at the same exact scale on a shared baseline",
+      "thesis": "Every customer drawn at the same scale, so comparison is honest.",
+      "palette": ["#f7f2e6", "#6b4f3a", "#8c1c2b"],
+      "materials": ["warm cream plate ground", "hairline sepia rules", "graphite labels"],
+      "kept": "Fixed scale on a shared baseline: every figure at one size, so the eye compares without a legend — and the cream plate ground is the exact category default this project must not land on."
+    },
+    {
+      "id": "challenger-midnight-transit-diagram",
+      "label": "The Crossing",
+      "verdict": "declined",
+      "lineage": "metropolitan rail map fired as a midnight-blue enamel mural — lines bending only at 45 and 90 degrees, interchanges blooming where they meet",
+      "thesis": "Customers as a network, movement as the map.",
+      "palette": ["#101a3c", "#f4f6f8", "#c8102e", "#f5c518"],
+      "materials": ["enamel ground", "porcelain station ticks", "four line inks"],
+      "kept": "The interchange: a real crossing, marked where one customer both owes money and has already paid, so the two things are seen meeting instead of listed apart."
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A clean finance dashboard, executed impeccably: white ground, blue accent, cards of round numbers, a table, a primary button.",
+    "palette": ["#ffffff", "#111827", "#2563eb"],
+    "materials": ["clean grid", "soft card shadows", "product illustration"],
+    "viewport": "A header, four statistic cards, a table of customers, one blue primary action.",
+    "risk": "Indistinguishable from every other tool by design — that is what this door is for, not a criticism of it."
+  },
+  "steer": true
+}

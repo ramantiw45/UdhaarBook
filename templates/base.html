@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <title>{% block title %}Udhaar Book{% endblock %}</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/static/fonts/fonts.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 5h18" /><path d="M3 11h12" /><path d="M3 17h7" />
+          <path class="tick" d="M16 9v4" />
+        </svg>
+        <span class="name">Udhaar Book</span>
+        <span class="shop">{{ shop_name }}</span>
+      </a>
+      <nav>
+        <a href="/"{% if nav == 'read' %} aria-current="page"{% endif %}>Read</a>
+        <a href="/ledger"{% if nav == 'ledger' %} aria-current="page"{% endif %}>Ledger</a>
+        <a href="/reminders"{% if nav == 'reminders' %} aria-current="page"{% endif %}>Ask</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">The page is read by <strong>{% if ocr_backends %}{{ ocr_backends|join(', ') }} on this machine{% else %}an open-weight model lane{% endif %}</strong> and kept in one SQLite file. No account, no per-entry fee.</div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

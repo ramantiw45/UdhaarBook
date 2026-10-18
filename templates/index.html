@@ -1,0 +1,90 @@
+﻿{% extends "base.html" %}
+{% set nav = 'read' %}
+{% block title %}Read a page · Udhaar Book{% endblock %}
+{% block content %}
+
+<h1 style="font-size: 26px; letter-spacing: 0.01em; max-width: 22ch">Read one page of the book</h1>
+<p class="hint" style="margin: 10px 0 26px">
+  Photograph one page of the khata. You get the transactions, you check them,
+  and the balances follow. Nothing is written to the ledger until you say so.
+</p>
+
+{% if error %}<div class="callout stop"><p>{{ error }}</p></div>{% endif %}
+
+<form method="post" action="/read" enctype="multipart/form-data">
+  <label class="capture">
+    <input type="file" name="photo" accept="image/*" capture="environment" />
+    <svg class="camera" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2.2l1.2-1.8h8.2L17.3 7h2.2A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z"/>
+      <circle cx="12" cy="13" r="3.6"/>
+    </svg>
+    <span class="cap ink">Take the photo</span>
+    <p class="hint">One page, straight down, as much light as you have.</p>
+  </label>
+
+  <div style="border-top: 1px solid var(--hair); margin-top: 22px; padding-top: 18px">
+    <label class="check">
+      <input type="checkbox" name="use_sample" value="1" />
+      <span>Or use the sample page — no camera, no key, works with nothing installed</span>
+    </label>
+
+    <label class="field">
+      <span class="cap">On-device reader</span>
+      <select name="backend">
+        <option value="auto">Auto — the best reader installed here</option>
+        {% for b in ocr_backends %}<option value="{{ b }}">{{ b }}</option>{% endfor %}
+        <option value="none">None — let the model read the image</option>
+      </select>
+    </label>
+    <p class="hint">
+      {% if ocr_backends %}
+        Ready: <code>{{ ocr_backends|join(', ') }}</code>. This reads the page on
+        this machine, so the photo never has to go anywhere.
+      {% else %}
+        No local reader is installed, so the page goes to the model lane instead.
+        Add one when you want the photo to stay on the machine:
+        <code>pip install -r requirements-ocr.txt</code>.
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="tools" style="margin-top: 26px">
+    <button class="act solid" type="submit">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>
+      Read this page
+    </button>
+  </div>
+</form>
+
+<h2 class="cap" style="margin: 40px 0 12px">Which model reads it</h2>
+<ol class="steps">
+  {% for lane in lanes %}
+  <li>
+    <span>
+      <strong style="color: var(--ink); font-weight: 500">{{ lane.model }}</strong>
+      <span class="cap" style="display: inline; margin-left: 8px">{{ lane.name }}</span>
+      <br />{{ lane.label }}
+      {% if lane.local %} · nothing leaves this machine{% endif %}
+    </span>
+  </li>
+  {% endfor %}
+</ol>
+<p class="hint" style="margin-top: 16px">
+  Tried in that order. The reader that answered is recorded against every row,
+  so you can always see which model read your book. Point
+  <code>OLLAMA_BASE_URL</code> at a local model and the whole pipeline runs
+  on-device with no code change.
+</p>
+
+{% if sample_text %}
+<details style="margin-top: 34px">
+  <summary class="cap" style="cursor: pointer">The sample page</summary>
+  <pre>{{ sample_text }}</pre>
+  <p class="hint">
+    Hand-written for demos, not a real shop's page. Balances from it: Ramesh
+    Patil ₹140, Imran Shaikh ₹505, Prakash Jha ₹560, Ganesh Kulkarni ₹300.
+  </p>
+</details>
+{% endif %}
+
+{% endblock %}

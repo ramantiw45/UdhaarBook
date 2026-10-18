@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% set nav = 'reminders' %}
+{% block title %}Who to ask · Udhaar Book{% endblock %}
+{% block content %}
+
+{% if entries %}
+<svg class="plot" viewBox="0 0 {{ plot.width }} {{ plot.height }}" preserveAspectRatio="none"
+     style="height: {{ plot.height }}px"
+     role="img" aria-label="One hairline per customer, its length showing what they still owe. A red tick marks a customer who has both taken credit and paid some back.">
+  <line class="rail" x1="0.5" y1="0" x2="0.5" y2="{{ plot.height }}" />
+  {% for row in plot.rows %}
+  <line class="{{ 'line sel' if row.selected else 'line' }}" x1="0" y1="{{ row.y }}" x2="{{ row.length }}" y2="{{ row.y }}" />
+  {% if row.crossing %}<line class="tick" x1="{{ row.crossing }}" y1="{{ row.y - 5 }}" x2="{{ row.crossing }}" y2="{{ row.y + 5 }}" />{% endif %}
+  {% endfor %}
+</svg>
+
+<div class="plot-key">
+  <span class="cap">{{ entries|length }} still to ask</span>
+  {% if plot.rows|selectattr('crossing')|list %}
+  <span class="plot-legend">a red tick marks a customer who has both taken credit and paid some back</span>
+  {% endif %}
+  <span class="keys">
+    {% for code, label in langs.items() %}
+    <a class="key{% if code == active_lang %} active{% endif %}" href="/reminders?lang={{ code }}"
+       title="{{ label }}"{% if code == active_lang %} aria-current="true"{% endif %}>{{ lang_short[code] }}</a>
+    {% endfor %}
+    <button class="key" type="button" id="reveal" aria-pressed="false" title="Show every name at once">Reveal</button>
+  </span>
+</div>
+
+<span class="total">₹{{ '{:,.0f}'.format(total_outstanding) }}</span>
+
+<ol class="seq">
+  {% for e in entries %}
+  <li class="entry">
+    <button class="row" type="button" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="d{{ loop.index }}">
+      <span class="code">P{{ '%02d'|format(e.page_no) if e.page_no else '—' }}</span>
+      <span class="mark{% if e.balance <= 0 %} received{% endif %}" style="--strip: {{ e.strip }}" aria-hidden="true"></span>
+      <span class="who{% if loop.first %} decoded{% endif %}" data-name="{{ e.name }}"
+            data-label="{{ e.lines_label }}">{{ e.name if loop.first else e.lines_label }}</span>
+      <span class="amount"><span class="drop">₹</span>{{ '{:,.0f}'.format(e.balance) }}</span>
+    </button>
+
+    <div class="decode{% if loop.first %} open{% endif %}" id="d{{ loop.index }}">
+      <div>
+        <div class="decode-inner">
+          <div class="name-hint">
+            <span class="lineage">{{ e.lines_label }}{% if e.last_date %} · last {{ e.last_date }}{% endif %} · ₹{{ '{:,.0f}'.format(e.given) }} given{% if e.received %} · ₹{{ '{:,.0f}'.format(e.received) }} back{% endif %}</span>
+          </div>
+          <p class="message" lang="{{ active_lang }}" id="m{{ loop.index }}">{{ e.message }}</p>
+          <div class="tools">
+            <button class="act small" type="button" data-copy="m{{ loop.index }}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
+              Copy the message
+            </button>
+            <a class="act small" href="https://wa.me/?text={{ e.message|urlencode }}"
+               target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></svg>
+              Open in WhatsApp
+            </a>
+          </div>
+          <p class="hint" style="margin-top: 12px">
+            Opens WhatsApp with the message written and no number attached — you
+            pick the contact. Nothing is sent from here, and no number is stored.
+          </p>
+        </div>
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+
+<p class="hint" style="margin-top: 26px">
+  Names stay coded until you decode them, because this screen sits on a counter
+  other people can see. Use <span class="cap">Reveal</span> when the shop is empty.
+  The figure always comes from the ledger; the model only softens the wording.
+</p>
+
+{% else %}
+<div class="empty">
+  <h2>Nobody owes anything</h2>
+  <p>There is nothing to ask for tonight. Read a page of the book and the balances will appear here.</p>
+  <a class="act small" href="/">Read a page of the khata</a>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block scripts %}
+<script src="/static/app.js"></script>
+{% endblock %}

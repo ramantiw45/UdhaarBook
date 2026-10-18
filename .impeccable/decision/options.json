@@ -1,0 +1,111 @@
+{
+  "title": "Choose the visual world",
+  "question": "The roll assigned The Khata Register — the literal ruled register, my lowest-ranked grounded candidate, which is exactly why it has to be built with commitment rather than nostalgia. Keep it, take an alternate, re-roll, or take the category standard.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Khata Register",
+      "kicker": "THE ROLL",
+      "lineage": "Indian shop khata registers — ruled money columns, a red margin rule, and two pens",
+      "thesis": "The page the shop already writes in, kept honest: blue-black ink for what was given on credit, a second red pen for what came back.",
+      "palette": ["#1d2b4f", "#eef1ec", "#c3d0cd", "#a8321f", "#1f2a3d", "#5b3a72"],
+      "materials": ["ink-absorbing ruled stock", "blue-black ballpoint", "red margin rule", "rubber-stamp ink"],
+      "viewport": "A register page at the size of a phone: the ruling IS the layout grid, not a texture behind it. The red margin rule holds the left edge and stays there while figures sit right-aligned in their own columns. One page of one day, the closing total boxed at the foot, and the reminder screen as the register's pursuit page — who is still to be asked, biggest first.",
+      "risk": "Ruled-paper nostalgia is the obvious trap, and a warm cream ground with a serif is the exact category default this roll exists to break — so the paper stays cool, the ruling stays load-bearing, and the ink colour has to mean something.",
+      "raised": [
+        { "from": "challenger-variable-font-specimen", "raise": "One control re-sets the whole reminder live: language and tone change the message in place, at the size it will actually be read." },
+        { "from": "challenger-star-atlas", "raise": "Magnitude carries value — the written figure is sized by the amount, so the page reads before the words do." },
+        { "from": "challenger-character-goods-catalog", "raise": "Every customer keeps one plain line of human context beside the number: the note column treated as a person, never as metadata or a risk score." },
+        { "from": "challenger-cassette-j-card", "raise": "Two hard halves that never mix — udhaar and jama — with every figure right-aligned tight against the rule." }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "The Message That Lands",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "WhatsApp as the material world of the money conversation",
+      "thesis": "Design the reminder as the object it actually is: a message that has to arrive in a customer's chat without costing the relationship.",
+      "palette": ["#0f1c17", "#d9fdd3", "#1f6f5c", "#59616b"],
+      "materials": ["the chat bubble", "delivered ticks", "the voice note"],
+      "viewport": "The message at the size it will be read, inside the chat it will land in, with language and tone driving it live above.",
+      "risk": "This is where most products in this category land, and a chat-bubble pastiche reads as a WhatsApp clone — familiar to the point of pastiche. Named honestly, because that trade is yours to make, not mine."
+    },
+    {
+      "id": "challenger-variable-font-specimen",
+      "label": "One Slider, Whole Page",
+      "verdict": "competitive",
+      "lineage": "variable-font specimen: drag an axis, the entire glyph grid moves with it",
+      "thesis": "Language and tone become real axes. Drag one and the whole reminder re-typesets in place, at reading size.",
+      "palette": ["#fbfbf9", "#111111", "#1f6f5c"],
+      "materials": ["near-white paper", "ink black", "live axis readout"],
+      "viewport": "One enormous Devanagari line, a single slider beneath it, and the message re-setting with every drag.",
+      "case": "Fuses cleanly: tone is the exact thing a shopkeeper agonises over when asking for money, and it holds the clarity axis outright. Loses the identification axis to the register, which is the object already on their counter.",
+      "risk": "Novelty if the axes are not honest — a slider that changes nothing real is a toy."
+    },
+    {
+      "id": "challenger-crouwel-grid-specimen",
+      "label": "The Visible Armature",
+      "verdict": "competitive",
+      "lineage": "Wim Crouwel's gridded type specimen — forms built cell by cell on a construction grid that stays visible",
+      "thesis": "The register's ruling is a construction grid. Make it structural, give it a toggle, and let nothing sit off-grid.",
+      "palette": ["#ffffff", "#2b4bd8", "#111111"],
+      "materials": ["construction-grid hairlines", "flat ground", "one earned accent plane"],
+      "viewport": "The money columns redrawn as a hard grid, the ruling visible as the armature, the total slabbed across it.",
+      "case": "Fuses almost too well — the register and the grid are the same idea in two materials, so it holds both axes, but it adds no state the register did not already have.",
+      "risk": "Graph-paper coldness in a tool about people."
+    },
+    {
+      "id": "challenger-metro-typographic-tiles",
+      "label": "No Chrome, One Message",
+      "verdict": "competitive",
+      "lineage": "Metro typographic tiles — flat colour fields, giant cropped type, every button chrome deleted",
+      "thesis": "Each reminder is a full tile you flick through. Colour field carries the state, the type carries the figure, nothing else is on screen.",
+      "palette": ["#000000", "#00a3a3", "#c4006b", "#f2f2f0"],
+      "materials": ["flat tiles", "chrome-free surface", "scroll-snap panes"],
+      "viewport": "One customer per pane, the amount set enormous and cropped at the edge, the next pane promising itself at the right.",
+      "case": "Holds the clarity axis outright — one message in view, no dashboard furniture. Loses identification: bold flat colour is not the world of a kirana counter.",
+      "risk": "A shopkeeper scrolling a gallery instead of getting the asking done."
+    },
+    {
+      "id": "challenger-star-atlas",
+      "label": "Magnitude Notation",
+      "verdict": "declined",
+      "lineage": "celestial star atlas — dot diameter as magnitude on a fixed ramp",
+      "thesis": "Value as magnitude, ringed for what needs attention now.",
+      "palette": ["#101a2c", "#e8eef8", "#a8321f"],
+      "materials": ["chalk-white marks", "night-vision red annotations"],
+      "kept": "Magnitude encoding: the size of the mark carries the size of the number, so no legend is needed."
+    },
+    {
+      "id": "challenger-character-goods-catalog",
+      "label": "The Roster",
+      "verdict": "declined",
+      "lineage": "character-goods catalog page — a ranked roster, each entry carrying a name plate and one line about who it is",
+      "thesis": "Customers ranked, each with a line about them.",
+      "palette": ["#f6d9e8", "#fffdf7", "#c4006b"],
+      "materials": ["pastel grounds", "white keylines", "rounded name plates"],
+      "kept": "One plain human line per customer, ruled beneath the name — the note column taken seriously as a person."
+    },
+    {
+      "id": "challenger-cassette-j-card",
+      "label": "Two Sides",
+      "verdict": "declined",
+      "lineage": "mixtape J-card — ballpoint on lined inlay stock, side A and side B as hard halves, running times tight against the margin",
+      "thesis": "Udhaar and jama as two sides of one sheet, with a physical flip between them.",
+      "palette": ["#f7f5f0", "#24407a", "#c0392b"],
+      "materials": ["ballpoint on ruled stock", "printed brand stripe", "right-aligned running times"],
+      "kept": "Two hard halves with a real flip between them, and every figure right-aligned tight against the rule."
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A clean finance dashboard, executed impeccably: white ground, blue accent, cards of round numbers.",
+    "palette": ["#ffffff", "#111827", "#2563eb"],
+    "materials": ["clean grid", "soft card shadows", "product illustration"],
+    "viewport": "A header, four statistic cards, a table of customers, a blue primary button.",
+    "risk": "Indistinguishable from every other tool by design — which is the point of the door, not a criticism of it."
+  },
+  "steer": true
+}
