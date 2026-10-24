@@ -140,6 +140,7 @@ tells you whether the model or the parser did the work.
 | `429` in the logs | free-tier request limit | expected; the chain falls back, retry later |
 | First visit times out | free instance asleep | wait, then reload |
 | Deploy is Live but `/healthz` 502s | the app crashed on boot | Render logs — the usual cause is a bad env value |
+| Header still shows a shop name you removed from `render.yaml` | Render keeps env vars already stored on the service; a blueprint sync adds and updates but does not delete them | Dashboard → **Environment** → clear or delete `SHOP_NAME` → **Save** (redeploys). Blank renders "your shop". Also confirm the deploy is on the latest commit. |
 
 ---
 
