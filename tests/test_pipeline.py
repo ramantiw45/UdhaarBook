@@ -165,6 +165,21 @@ def test_text_only_lane_never_guesses() -> None:
                 os.environ[key] = value
 
 
+def test_no_hardcoded_shop_name() -> None:
+    """A blank SHOP_NAME must not fall back to some fixture shop."""
+    import os
+
+    saved = os.environ.pop("SHOP_NAME", None)
+    try:
+        assert reminders.shop_name() == "your shop", reminders.shop_name()
+        text = reminders.build_reminder("Ramesh Patil", 200.0, "en")
+        assert "your shop" in text, text
+        assert "Suresh" not in text, text
+    finally:
+        if saved is not None:
+            os.environ["SHOP_NAME"] = saved
+
+
 if __name__ == "__main__":
     failures = 0
     for name, fn in sorted(globals().items()):

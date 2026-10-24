@@ -108,6 +108,8 @@ def main() -> int:
     expected_shop = os.getenv("SHOP_NAME", "").strip()
     if expected_shop:
         checks.append((f"the header says {expected_shop}", expected_shop in body, ""))
+    else:
+        checks.append(("the header uses the neutral shop label", "your shop" in body, ""))
 
     status, review = post_form("/read", {"use_sample": "1", "backend": "auto"})
     checks.append(("POST /read (sample)", status == 200, f"{status}"))

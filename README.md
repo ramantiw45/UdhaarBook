@@ -109,7 +109,7 @@ Every value is optional. See `.env.example`.
 
 | Variable | What it does |
 |---|---|
-| `SHOP_NAME`, `SHOP_LANG` | Name and default language for reminders (`en`, `hi`, `mr`) |
+| `SHOP_NAME`, `SHOP_LANG` | Your shop's name (blank shows "your shop") and default reminder language (`en`, `hi`, `mr`) |
 | `AI_STUDIO_API_KEY` | Free key, no card: <https://aistudio.google.com/apikey> |
 | `GROQ_API_KEY` | Failover lane: <https://console.groq.com/keys> |
 | `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | Run the whole thing on-device |

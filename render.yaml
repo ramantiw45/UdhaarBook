@@ -12,8 +12,9 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.6"
+      # Optional: your shop's own name. Blank shows "your shop".
       - key: SHOP_NAME
-        value: Suresh Kirana
+        sync: false
       - key: SHOP_LANG
         value: mr
       # Set this in the Render dashboard (free key, no card):

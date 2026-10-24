@@ -154,7 +154,8 @@ was measured rather than assumed:
 ## Honest limits
 
 - **No real user has used this.** No field test happened. `samples/*` are
-  synthetic fixtures, and the "shop" is a fixture shop (`Suresh Kirana`).
+  synthetic fixtures, and the shop name is configuration — with none set the
+  app says "your shop".
 - **The photo path is now proven on this machine, but only on rendered pages.**
   `rapidocr 3.10` + `onnxruntime 1.31` install on Python 3.14; with the network
   blocked, the local reader took the 12-line rendered sample to 10 rows (Latin
