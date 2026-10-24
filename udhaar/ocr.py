@@ -13,6 +13,7 @@ from __future__ import annotations
 import io
 import os
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Iterable
 
 # Probe order: lightest and most reliable first.
@@ -173,30 +174,11 @@ def _decode(image_bytes: bytes):
 # --------------------------------------------------------------------------
 # backends
 # --------------------------------------------------------------------------
-def _run_rapidocr(image_bytes: bytes, notes: list[str]) -> list[str]:
-    """PP-OCR through ONNX Runtime. Runs on CPU, no network after install."""
-    payload = _decode(image_bytes)
-    if payload is None:
-        payload = image_bytes
+@lru_cache(maxsize=2)
+def _rapidocr_v3(lang: str):
+    """One engine per script; loading three ONNX models for every page is waste."""
+    from rapidocr import LangRec, ModelType, OCRVersion, RapidOCR  # 3.x
 
-    try:
-        from rapidocr import LangRec, ModelType, OCRVersion, RapidOCR  # 3.x
-    except ImportError:
-        # 1.x/2.x kept the same engine under a different package name.
-        from rapidocr_onnxruntime import RapidOCR  # type: ignore[no-redef]
-
-        engine = RapidOCR()
-        try:
-            result, _elapsed = engine(payload)
-        except TypeError:
-            result, _elapsed = engine(payload, use_det=True, use_cls=True, use_rec=True)
-        notes.append("rapidocr 1.x = PP-OCR (open source) via ONNX Runtime, CPU only")
-        return _group_lines(
-            [item[0] for item in result or []],
-            [item[1] for item in result or []],
-        )
-
-    lang = _ocr_lang()
     params = None
     if lang == "devanagari":
         # PP-OCRv5 mobile is the only shipped combination with a Devanagari
@@ -208,8 +190,37 @@ def _run_rapidocr(image_bytes: bytes, notes: list[str]) -> list[str]:
             "Rec.ocr_version": OCRVersion.PPOCRV5,
             "Rec.model_type": ModelType.MOBILE,
         }
+    return RapidOCR(params=params)
 
-    engine = RapidOCR(params=params)
+
+@lru_cache(maxsize=1)
+def _rapidocr_v1():
+    from rapidocr_onnxruntime import RapidOCR  # type: ignore[import-not-found]
+
+    return RapidOCR()
+
+
+def _run_rapidocr(image_bytes: bytes, notes: list[str]) -> list[str]:
+    """PP-OCR through ONNX Runtime. Runs on CPU, no network after install."""
+    payload = _decode(image_bytes)
+    if payload is None:
+        payload = image_bytes
+
+    try:
+        engine = _rapidocr_v3(_ocr_lang())
+    except ImportError:
+        # 1.x/2.x kept the same engine under a different package name.
+        engine = _rapidocr_v1()
+        try:
+            result, _elapsed = engine(payload)
+        except TypeError:
+            result, _elapsed = engine(payload, use_det=True, use_cls=True, use_rec=True)
+        notes.append("rapidocr 1.x = PP-OCR (open source) via ONNX Runtime, CPU only")
+        return _group_lines(
+            [item[0] for item in result or []],
+            [item[1] for item in result or []],
+        )
+
     output = engine(payload)
 
     texts = getattr(output, "txts", None) or ()
@@ -217,7 +228,7 @@ def _run_rapidocr(image_bytes: bytes, notes: list[str]) -> list[str]:
     lines = _group_lines(boxes, texts) if boxes is not None else [
         str(text).strip() for text in texts if str(text).strip()
     ]
-    script = "devanagari" if lang == "devanagari" else "Latin + digits"
+    script = "devanagari" if _ocr_lang() == "devanagari" else "Latin + digits"
     notes.append(f"rapidocr 3.x = PP-OCR ({script}) via ONNX Runtime, CPU only")
     return lines
 
