@@ -52,15 +52,101 @@ def available_backends() -> list[str]:
 def _probe(name: str) -> bool:
     import importlib.util
 
-    module = {
-        "rapidocr": "rapidocr_onnxruntime",
-        "paddleocr": "paddleocr",
-        "tesseract": "pytesseract",
+    modules = {
+        # RapidOCR renamed its package in 3.x; both import paths are real.
+        "rapidocr": ("rapidocr", "rapidocr_onnxruntime"),
+        "paddleocr": ("paddleocr",),
+        "tesseract": ("pytesseract",),
     }[name]
-    try:
-        return importlib.util.find_spec(module) is not None
-    except (ImportError, ValueError):
-        return False
+    for module in modules:
+        try:
+            if importlib.util.find_spec(module) is not None:
+                return True
+        except (ImportError, ValueError):
+            continue
+    return False
+
+
+def _ocr_lang() -> str:
+    """Which recognition model to load.
+
+    ``auto`` keeps the shipped Chinese/English model, which is the one that
+    reads Latin names, digits and dates. Devanagari needs its own model and
+    reads Latin badly, so it is opt-in rather than a guess.
+    """
+    raw = (os.getenv("OCR_LANG", "auto") or "auto").strip().lower()
+    if raw in {"hi", "mr", "marathi", "hindi", "devanagari", "देवनागरी"}:
+        return "devanagari"
+    return "auto"
+
+
+def _group_lines(boxes, texts) -> list[str]:
+    """Rebuild text lines from per-box OCR output.
+
+    Detection boxes split one written line into several fragments ("Ramesh
+    Patil", "12/10 cheeni 2kg", "340 udhaar"). The rest of the pipeline reads
+    line by line, so fragments are grouped by **vertical overlap** and joined
+    left to right. Centres alone are not enough: a Devanagari fragment is
+    taller than the digits beside it and drifts away from their centre line.
+    """
+    items: list[dict] = []
+    for box, text in zip(
+        boxes if boxes is not None else [],
+        texts if texts is not None else [],
+    ):
+        text = str(text).strip()
+        if not text:
+            continue
+        try:
+            points = [(float(p[0]), float(p[1])) for p in box]
+        except (TypeError, ValueError, IndexError):
+            continue
+        if not points:
+            continue
+        xs = [p[0] for p in points]
+        ys = [p[1] for p in points]
+        items.append(
+            {
+                "x": min(xs),
+                "top": min(ys),
+                "bottom": max(ys),
+                "text": text,
+            }
+        )
+
+    if not items:
+        return []
+
+    items.sort(key=lambda item: ((item["top"] + item["bottom"]) / 2, item["x"]))
+    lines: list[str] = []
+    current: list[dict] = []
+    span: tuple[float, float] | None = None
+
+    def flush() -> None:
+        nonlocal current, span
+        if current:
+            ordered = sorted(current, key=lambda item: item["x"])
+            lines.append("  ".join(item["text"] for item in ordered))
+        current, span = [], None
+
+    for item in items:
+        if span is None:
+            current.append(item)
+            span = (item["top"], item["bottom"])
+            continue
+
+        overlap = min(span[1], item["bottom"]) - max(span[0], item["top"])
+        shorter = min(span[1] - span[0], item["bottom"] - item["top"]) or 1.0
+        if overlap / shorter >= 0.4:
+            current.append(item)
+            span = (min(span[0], item["top"]), max(span[1], item["bottom"]))
+        else:
+            flush()
+            current = [item]
+            span = (item["top"], item["bottom"])
+
+    flush()
+    return lines
 
 
 def _decode(image_bytes: bytes):
@@ -88,31 +174,51 @@ def _decode(image_bytes: bytes):
 # backends
 # --------------------------------------------------------------------------
 def _run_rapidocr(image_bytes: bytes, notes: list[str]) -> list[str]:
-    from rapidocr_onnxruntime import RapidOCR
-
-    engine = RapidOCR()
-
-    # Newer builds accept raw bytes / paths directly.
-    payload = image_bytes
-    decoded = _decode(image_bytes)
-    if decoded is not None:
-        payload = decoded
+    """PP-OCR through ONNX Runtime. Runs on CPU, no network after install."""
+    payload = _decode(image_bytes)
+    if payload is None:
+        payload = image_bytes
 
     try:
-        result, _elapsed = engine(payload)
-    except TypeError:
-        result, _elapsed = engine(payload, use_det=True, use_cls=True, use_rec=True)
+        from rapidocr import LangRec, ModelType, OCRVersion, RapidOCR  # 3.x
+    except ImportError:
+        # 1.x/2.x kept the same engine under a different package name.
+        from rapidocr_onnxruntime import RapidOCR  # type: ignore[no-redef]
 
-    if not result:
-        return []
-    lines: list[str] = []
-    for item in result:
-        # item is [box, text, score] in every released version so far.
-        if isinstance(item, (list, tuple)) and len(item) >= 2:
-            text = str(item[1]).strip()
-            if text:
-                lines.append(text)
-    notes.append("rapidocr = PP-OCR (open source) via ONNX Runtime, CPU only")
+        engine = RapidOCR()
+        try:
+            result, _elapsed = engine(payload)
+        except TypeError:
+            result, _elapsed = engine(payload, use_det=True, use_cls=True, use_rec=True)
+        notes.append("rapidocr 1.x = PP-OCR (open source) via ONNX Runtime, CPU only")
+        return _group_lines(
+            [item[0] for item in result or []],
+            [item[1] for item in result or []],
+        )
+
+    lang = _ocr_lang()
+    params = None
+    if lang == "devanagari":
+        # PP-OCRv5 mobile is the only shipped combination with a Devanagari
+        # recognizer; v6 small and v4 mobile either reject the language or
+        # garbled it. The model is fetched once (7 MB) and cached beside the
+        # package, so later runs are offline.
+        params = {
+            "Rec.lang_type": LangRec.DEVANAGARI,
+            "Rec.ocr_version": OCRVersion.PPOCRV5,
+            "Rec.model_type": ModelType.MOBILE,
+        }
+
+    engine = RapidOCR(params=params)
+    output = engine(payload)
+
+    texts = getattr(output, "txts", None) or ()
+    boxes = getattr(output, "boxes", None)
+    lines = _group_lines(boxes, texts) if boxes is not None else [
+        str(text).strip() for text in texts if str(text).strip()
+    ]
+    script = "devanagari" if lang == "devanagari" else "Latin + digits"
+    notes.append(f"rapidocr 3.x = PP-OCR ({script}) via ONNX Runtime, CPU only")
     return lines
 
 
@@ -188,8 +294,8 @@ def run_ocr(image_bytes: bytes, backend: str = "auto") -> OcrResult:
                 text="",
                 backend="none",
                 notes=[
-                    "No local OCR backend installed. The vision lane will read "
-                    "the page instead. See requirements-ocr.txt for the on-device layer."
+                    "No local OCR backend installed. See requirements-ocr.txt "
+                    "for the on-device layer."
                 ],
             )
         backend = installed[0]

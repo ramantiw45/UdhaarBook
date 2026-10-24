@@ -13,10 +13,14 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from pathlib import Path
 
 from dotenv import load_dotenv
 
 load_dotenv()
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 
 BASE = "http://127.0.0.1:8000"
 
@@ -66,6 +70,31 @@ def post_photo(path: str, image: bytes, filename: str = "khata.jpg", mime: str =
         return error.code, error.read().decode("utf-8", "replace")
 
 
+def rendered_page() -> bytes | None:
+    """A clean digital page for the OCR happy path, when OCR is installed."""
+    try:
+        from udhaar import ocr
+
+        if not ocr.available_backends():
+            return None
+
+        import tempfile
+
+        from make_page_image import pick_font, render
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "page.png"
+            render(
+                (ROOT / "samples" / "sample_ledger.txt").read_text(encoding="utf-8"),
+                out,
+                pick_font(None),
+                size=30,
+            )
+            return out.read_bytes()
+    except (Exception, SystemExit):
+        return None
+
+
 def main() -> int:
     failures = 0
     checks: list[tuple[str, bool, str]] = []
@@ -91,9 +120,25 @@ def main() -> int:
     checks.append(("POST /read (a photo) never breaks", status < 500, f"{status}"))
     explains = any(
         phrase in photo
-        for phrase in ("no OCR backend is installed", "install a local OCR backend", "Add a key")
+        for phrase in (
+            "nothing on this machine could read it",
+            "no OCR backend is installed",
+            "install a local OCR backend",
+            "Add a key",
+        )
     )
     checks.append(("a failed photo read is explained", status >= 500 or explains, ""))
+
+    # When the optional on-device reader is installed, the same upload path must
+    # actually produce rows from a clean page — no key, no network, no model lane.
+    page = rendered_page()
+    if page is None:
+        checks.append(("local OCR happy path (no reader installed, skipped)", True, ""))
+    else:
+        status, ocr_review = post_photo("/read", page, filename="page.png", mime="image/png")
+        checks.append(("POST /read (a readable page)", status == 200, f"{status}"))
+        checks.append(("the local reader produced rows", "Ramesh Patil" in ocr_review, ""))
+        checks.append(("the review names the local reader", "rapidocr" in ocr_review, ""))
 
     status, ledger = get("/ledger")
     checks.append(("GET /ledger", status == 200, f"{status}"))

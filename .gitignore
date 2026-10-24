@@ -5,6 +5,10 @@ __pycache__/
 venv/
 data/*.db
 data/*.db-journal
+# Rendered test pages (tools/make_page_image.py regenerates them).
+data/*.png
+data/*.html
+data/*.txt
 uploads/
 *.log
 

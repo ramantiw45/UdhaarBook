@@ -1,8 +1,11 @@
 # Finish review packet — Udhaar Book
 
-**Revision 2.** The first finish review returned *fix* with eight material
-findings. This revision is the shipping build after those fixes, recaptured
-from it. The disposition requested is now a **score**, not a new hunt.
+**Revision 5.** Revision 2 was the build after the first finish review. Since
+then the model lane moved to Gemma 4's native route, a second finish review
+closed six findings, and the optional on-device OCR layer was installed and
+measured on this machine (`docs/offline-proof.md`). The captures in this packet
+were taken at revision 2 and have not been re-shot; the layout they show is the
+shipped layout. The disposition requested is a **score**, not a new hunt.
 
 This is a **code-led build** (no approved comp exists, and no comp round was
 run; the direction was locked from a dealt hand and the world was built
@@ -74,6 +77,32 @@ JSON (`Method Not Allowed`); it now 303s to `/`, the page that starts the step.
 Dead weight removed (`--track` token, `static/reminders.js`), and the review
 component's comment corrected to say what it draws.
 
+## Since revision 2 (shipping build)
+
+1. **Gemma 4 on its native route.** Gemma 3 was retired from the Gemini API in
+   2026, so the AI Studio lane posts to `models/{model}:generateContent` through
+   a small adapter. The default is `gemma-4-26b-a4b-it` (26B-A4B MoE, steadier on
+   the free tier); `gemma-4-31b-it` is one env var away. A 5xx gets one retry; a
+   429 is not retried. `tests/test_pipeline.py` asserts the native body, so a
+   rename alone cannot pass.
+2. **Second finish review: six findings, all closed.** `inert` moved to the tools
+   inside a decoded row, so the panel's own links stay reachable while a closed
+   panel is out of the tab order; the row `aria-label` is rebuilt on open and
+   close with the customer's name; copy confirmation is filled amber with a
+   polite live region; the reader select is shortened to "Auto — best reader
+   here"; step numbers use `--red-bright`; `DESIGN.md` and `design.json` were
+   reconciled and the sample row in `design.json` fixed.
+3. **The local reader is installed and measured.** RapidOCR 3.10 + ONNX Runtime
+   1.31 on Python 3.14, CPU only. Detection fragments are regrouped by vertical
+   overlap before parsing (a row is one line, not three), unit quantities
+   ("10 किलो") are never read as money, and `OCR_LANG=mr` loads the PP-OCRv5
+   Devanagari recognizer. `docs/offline-proof.md` records 10/12 rows on the
+   Latin render and 6/12 on the Devanagari render, with the network blocked.
+4. **Honest lane states.** `describe_lanes()` carries `vision`; a text-only lane
+   with no OCR text is skipped instead of being asked to invent rows, and the
+   read screen and footer only promise a model lane when one can actually see a
+   photo.
+
 ## Measured in the live page (not asserted)
 
 - At 390px: `scrollWidth` 390 (no horizontal scroll), and the four children of a
@@ -126,11 +155,13 @@ was measured rather than assumed:
 
 - **No real user has used this.** No field test happened. `samples/*` are
   synthetic fixtures, and the "shop" is a fixture shop (`Suresh Kirana`).
-- **The photo path is wired but unproven on this machine.** No OCR backend is
-  installed (Python 3.14 has no wheels for the usual runtimes), and no model lane
-  has a key, so an uploaded photo is answered honestly and the reviewer is handed
-  the sample page instead. The text-fixture path, the parsing, the ledger and the
-  reminder screen are all exercised end to end.
+- **The photo path is now proven on this machine, but only on rendered pages.**
+  `rapidocr 3.10` + `onnxruntime 1.31` install on Python 3.14; with the network
+  blocked, the local reader took the 12-line rendered sample to 10 rows (Latin
+  model) and the Devanagari render to 6 rows (`OCR_LANG=mr`). The two Devanagari
+  lines the Latin model cannot read are reported, not guessed. What remains
+  unproven is a real shop's handwriting, a smudged page, and a phone photo at an
+  angle — see `docs/offline-proof.md` for the exact numbers and the gaps.
 - **Coded is a visual measure, not a data one.** When a row is open the customer's
   name is inside the reminder text by design — the message has to greet them. The
   coding protects against a passer-by reading the list at rest; it does not make

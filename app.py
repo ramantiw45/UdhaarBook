@@ -58,11 +58,12 @@ def _reader_state(backends: list[str], lane_rows: list[dict]) -> str:
     """What can actually read a photo on this machine right now.
 
     The read screen used to promise that a page "goes to the model lane" even
-    when no lane had a key, which is the same overclaim the footer carried.
+    when no lane had a key, which is the same overclaim the footer carried. A
+    text-only lane with no OCR text is just as useless for a photo.
     """
     if backends:
         return "ocr"
-    if any(row["name"] != "deterministic" for row in lane_rows):
+    if any(row.get("vision") for row in lane_rows if row["name"] != "deterministic"):
         return "lane"
     return "none"
 
@@ -77,14 +78,17 @@ def _reader_line(backends: list[str], lane_rows: list[dict]) -> str:
     which on a keyless machine is a lie: the deterministic parser did the work.
     """
     configured = [row for row in lane_rows if row["name"] != "deterministic"]
+    seeing = [row for row in configured if row.get("vision")]
     if backends and configured:
         return f"{', '.join(backends)} on this machine, then {configured[0]['model']}"
     if backends:
         return f"{', '.join(backends)} on this machine"
-    if configured:
-        first = configured[0]
+    if seeing:
+        first = seeing[0]
         where = "this machine" if first["local"] else PROVIDER.get(first["name"], first["name"])
         return f"{first['model']} via {where}"
+    if configured:
+        return "the built-in parser (the configured models cannot see a photo)"
     return "the built-in parser (no model, no network)"
 
 
@@ -157,9 +161,13 @@ async def read_page(
     if not reader and extract.used_image and extract.lane not in ("", "regex parser"):
         reader = extract.lane
     if not reader:
+        reason = (
+            result.notes[0]
+            if result.notes
+            else "no OCR backend is installed and no model lane can see a photo"
+        )
         source_note = (
-            f"{page_name or 'this page'} · nothing on this machine could read it — "
-            "no OCR backend is installed and no model lane has a key"
+            f"{page_name or 'this page'} · nothing on this machine could read it — {reason}"
         )
     else:
         source_note = f"{page_name or 'this page'} · read by {reader} · structured by {extract.lane}"

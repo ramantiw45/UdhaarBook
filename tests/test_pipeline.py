@@ -120,6 +120,51 @@ def test_gemma_lane_speaks_native() -> None:
             os.environ["AI_STUDIO_API_KEY"] = previous
 
 
+def test_unit_quantity_is_not_money() -> None:
+    """A weight or volume must never be read as the amount."""
+    payload = llm.deterministic_extract("Ramesh Patil  12/10  atta 10 kg  420  udhaar")
+    assert payload["rows"], payload
+    assert payload["rows"][0]["amount"] == 420.0, payload["rows"][0]
+
+    # The same page in Devanagari, with Devanagari digits.
+    payload = llm.deterministic_extract("रमेश पाटील  १३/१०  भाजी १० किलो  ४२०  उधार")
+    assert payload["rows"], payload
+    assert payload["rows"][0]["amount"] == 420.0, payload["rows"][0]
+
+    # If the amount is unreadable, the quantity must not stand in for it.
+    payload = llm.deterministic_extract("Ramesh Patil  12/10  atta 10 kg")
+    assert payload["rows"] == [], payload["rows"]
+    assert payload["skipped_lines"], "the line should be reported, not guessed"
+
+
+def test_text_only_lane_never_guesses() -> None:
+    """A lane that cannot see images is skipped, not asked to invent rows."""
+    import os
+
+    saved = {
+        key: os.environ.get(key)
+        for key in ("AI_STUDIO_API_KEY", "GROQ_API_KEY", "OLLAMA_BASE_URL", "GROQ_VISION")
+    }
+    try:
+        os.environ.pop("AI_STUDIO_API_KEY", None)
+        os.environ.pop("OLLAMA_BASE_URL", None)
+        os.environ["GROQ_API_KEY"] = "test-only"
+        os.environ["GROQ_VISION"] = "0"
+
+        groq = [row for row in llm.describe_lanes() if row["name"] == "groq"][0]
+        assert groq["vision"] is False, groq
+
+        result = llm.extract_rows(image_bytes=b"\xff\xd8\xff", mime="image/jpeg")
+        assert not result.ok, result.rows
+        assert any("text-only lane" in error for error in result.errors), result.errors
+    finally:
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+
 if __name__ == "__main__":
     failures = 0
     for name, fn in sorted(globals().items()):

@@ -53,6 +53,11 @@ class Lane:
         return f"{self.name} · {self.model} · free tier"
 
 
+def _vision_env(key: str) -> bool:
+    """Vision defaults to on; a text-only model can be declared with ``*_VISION=0``."""
+    return (os.getenv(key, "1") or "1").strip().lower() not in {"0", "false", "no", "off"}
+
+
 def lanes() -> list[Lane]:
     """Build the chain from the environment. Missing keys simply drop out."""
     out: list[Lane] = []
@@ -66,6 +71,7 @@ def lanes() -> list[Lane]:
                 model=os.getenv("OLLAMA_MODEL", "gemma3:4b"),
                 api_key="ollama",  # Ollama ignores this, httpx wants something
                 local=True,
+                vision=_vision_env("OLLAMA_VISION"),
                 note="running on this machine",
             )
         )
@@ -80,6 +86,7 @@ def lanes() -> list[Lane]:
                 ).rstrip("/"),
                 model=os.getenv("AI_STUDIO_MODEL", "gemma-4-26b-a4b-it"),
                 api_key=os.environ["AI_STUDIO_API_KEY"].strip(),
+                vision=_vision_env("AI_STUDIO_VISION"),
                 note="Gemma 4, open weights",
                 protocol="gemini",
             )
@@ -92,6 +99,7 @@ def lanes() -> list[Lane]:
                 base_url=os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/"),
                 model=os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b"),
                 api_key=os.environ["GROQ_API_KEY"].strip(),
+                vision=_vision_env("GROQ_VISION"),
                 note="Qwen 3.8, open weights",
             )
         )
@@ -102,7 +110,13 @@ def lanes() -> list[Lane]:
 def describe_lanes() -> list[dict]:
     """For the UI: what will actually be tried, in order."""
     rows = [
-        {"name": lane.name, "model": lane.model, "label": lane.label, "local": lane.local}
+        {
+            "name": lane.name,
+            "model": lane.model,
+            "label": lane.label,
+            "local": lane.local,
+            "vision": lane.vision,
+        }
         for lane in lanes()
     ]
     rows.append(
@@ -111,6 +125,7 @@ def describe_lanes() -> list[dict]:
             "model": "regex parser",
             "label": "deterministic parser · always available",
             "local": True,
+            "vision": False,
         }
     )
     return rows
@@ -264,6 +279,17 @@ _DIRECTION_IN_NOTE = re.compile(
     r"\b(?:udhaar|udhar|jama|paid|payment|received|uchal|उधार|जमा|बाकी|चुका)\b",
     re.IGNORECASE,
 )
+# A number glued to a unit is a quantity, not money: "10 किलो" / "2 ltr".
+# Devanagari vowel signs are combining marks (not \w), so \b is useless there;
+# the lookahead keeps the match from swallowing a longer word instead.
+_UNIT_QTY = re.compile(
+    r"\d+(?:\.\d+)?\s*"
+    r"(?:kgs?|gms?|g|ml|ltrs?|l|litres?|liters?|pcs?|dozens?|packets?)(?![a-z])"
+    r"|"
+    r"\d+(?:\.\d+)?\s*(?:किलो|ग्रॅम|ग्राम|लिटर|मिली|नग|डझन|पॅकेट|पैकेट)"
+    r"(?![\u0900-\u097F])",
+    re.IGNORECASE,
+)
 
 
 def deterministic_extract(ocr_text: str) -> dict:
@@ -282,9 +308,11 @@ def deterministic_extract(ocr_text: str) -> dict:
         if any(token in low for token in _NOISE):
             continue
 
-        # Mask dates first, so 12/10 is not mistaken for two amounts, and
-        # match only whitespace-delimited numbers so "2kg" never reads as ₹2.
+        # Mask dates first, so 12/10 is not mistaken for two amounts, then
+        # unit quantities, so "10 किलो" is never read as ₹10. Match only
+        # whitespace-delimited numbers, so "2kg" never reads as ₹2 either.
         masked = _DATE.sub(lambda m: " " * len(m.group(0)), line)
+        masked = _UNIT_QTY.sub(lambda m: " " * len(m.group(0)), masked)
         matches = list(_STANDALONE_NUMBER.finditer(masked))
         if not matches:
             skipped.append(raw_line.strip())
@@ -292,6 +320,9 @@ def deterministic_extract(ocr_text: str) -> dict:
 
         amount_match = matches[-1]
         amount = float(amount_match.group(1))
+        if amount <= 0:
+            skipped.append(raw_line.strip())
+            continue
         date_match = _DATE.search(line)
         date = date_match.group(0) if date_match else ""
 
@@ -498,6 +529,14 @@ def extract_rows(
     result = ExtractResult()
 
     for lane in lanes():
+        if image_bytes and not lane.vision and not ocr_text.strip():
+            # A text-only model asked to "read this photo" with no photo and
+            # no OCR text will invent rows. Skipping is the honest answer.
+            result.errors.append(
+                f"{lane.name}: text-only lane, and there is no OCR text to read — skipped"
+            )
+            continue
+
         image_for_lane = image_bytes if (lane.vision and image_bytes) else None
         try:
             raw = _call_lane(lane, _messages(ocr_text, image_for_lane, mime))

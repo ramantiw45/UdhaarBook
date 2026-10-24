@@ -17,7 +17,7 @@ under a minute — and again at month end, when the money matters most.
 
 ```mermaid
 flowchart LR
-  P[Photo of the khata page] --> O[Local OCR<br/>PP-OCRv5 / PaddleOCR<br/>optional, CPU only]
+  P[Photo of the khata page] --> O[Local OCR<br/>PP-OCRv6 via ONNX<br/>optional, CPU only]
   P -.->|no OCR installed| L
   O --> T[Page text, on this device]
   T --> L{Open-weight lane chain}
@@ -54,8 +54,10 @@ chat-completions. The default is the 26B-A4B MoE (fast, reliable on the free
 tier); set `AI_STUDIO_MODEL=gemma-4-31b-it` for the heavier dense model.
 
 Point `OLLAMA_BASE_URL` at a local model and the whole pipeline runs on the
-shop's own machine with no code change. The OCR layer is open source too
-(PaddleOCR / PP-OCRv5), and it runs on CPU — no GPU anywhere in this project.
+shop's own machine with no code change. The OCR layer is open source too —
+RapidOCR's PP-OCR through ONNX Runtime, CPU only, no GPU anywhere in this
+project. `docs/offline-proof.md` records what it actually read on a rendered
+page, with the network blocked.
 
 ## Run it
 
@@ -90,10 +92,12 @@ pip install -r requirements-ocr.txt
 Neither suite needs a test framework installed:
 
 ```bash
-python tests/test_pipeline.py    # 4 checks: parsing, money maths, reminders, no-key path
+python tests/test_pipeline.py    # 7 checks: parsing, money maths, reminders, no-key path, lanes
+python tests/test_ocr.py         # optional: renders a page, reads it with the local OCR
 python tools/smoke_http.py       # 20 checks against a running server
 ```
 
+`tests/test_ocr.py` skips itself when the OCR extras are not installed.
 `tools/smoke_http.py` expects the app on `http://127.0.0.1:8000`. It includes the
 check that matters most for a stranger clicking through: uploading a photo with
 no OCR backend and no key must answer **200 with an honest explanation**, not a
@@ -110,6 +114,8 @@ Every value is optional. See `.env.example`.
 | `GROQ_API_KEY` | Failover lane: <https://console.groq.com/keys> |
 | `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | Run the whole thing on-device |
 | `OCR_BACKEND` | `auto`, `rapidocr`, `paddleocr`, `tesseract`, or `none` |
+| `OCR_LANG` | `auto` (Latin + digits) or `mr`/`hi`/`devanagari` for the Devanagari recognizer |
+| `AI_STUDIO_VISION`, `GROQ_VISION`, `OLLAMA_VISION` | `0` marks a lane text-only, so it is skipped for photos instead of guessing |
 | `UDHAAR_DB` | Where the SQLite file lives |
 
 ## What is real, and what is synthetic
@@ -125,9 +131,12 @@ Every value is optional. See `.env.example`.
 
 - Handwriting is hard. A smudged or badly lit page loses lines; the app is
   built to show what it could not read rather than to hide it.
-- Devanagari handwriting is the weakest case, and the OCR backend may not have
-  wheels for your Python version — in which case the model lane reads the image
-  and the on-device claim does not hold for that run.
+- Devanagari handwriting is the weakest case. The local Devanagari recognizer
+  is opt-in (`OCR_LANG=mr`), needs a one-time 7 MB download, and on the rendered
+  test page it recovered 6 of 12 amounts — it reads names better than numbers.
+  Latin pages do better on the default model (10 of 12). Where local OCR falls
+  short, the vision lane reads the image instead, and the confirm table still
+  asks a human before anything is written.
 - A reminder figure always comes from the ledger, never from a model. Models
   may only soften the wording.
 - No payments, no UPI link, no multi-shop support, no login. Deliberately.
